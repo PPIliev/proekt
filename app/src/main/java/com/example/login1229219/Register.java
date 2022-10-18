@@ -33,13 +33,11 @@ public class Register extends AppCompatActivity {
         b_register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String email =et_email.getText().toString();
+                String email = et_email.getText().toString();
                 if (et_password.getText().toString().equals(et_password2.getText().toString())) {
                     if (!email.isEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-                    UsersModel usersModel = new UsersModel(-1, et_username.getText().toString() ,et_password.getText().toString(),et_email.getText().toString());
-                    Dbhelper dbHelper = new Dbhelper(getApplicationContext());
-                    dbHelper.insertUser(usersModel);
-                    goToMain();
+                        createUser();
+                        goToMain();
                 } else {
                         //email
                         tv_passError.setText("You must enter a valid email!");
@@ -58,6 +56,12 @@ public class Register extends AppCompatActivity {
     public void goToMain() {
         Intent i = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(i);
+    }
+
+    public void createUser() {
+        UsersModel usersModel = new UsersModel(-1, et_username.getText().toString() ,et_password.getText().toString(),et_email.getText().toString());
+        Dbhelper dbHelper = new Dbhelper(getApplicationContext());
+        dbHelper.insertUser(usersModel);
     }
 
 

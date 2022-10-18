@@ -8,4 +8,5 @@
     <string name="Reenter">Re-enter password</string>
     <string name="email">Enter an email address</string>
     <string name="passerror">"Passwords must be the same! "</string>
+    <string name="loggedin">You have logged in correctly!</string>
 </resources>

@@ -2,6 +2,7 @@ package com.example.login1229219;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -45,6 +46,18 @@ public class Dbhelper extends SQLiteOpenHelper {
         }
         return true;
 
+    }
+
+    public boolean checkUsers(String username, String password) {
+        SQLiteDatabase db = getReadableDatabase();
+        String searchQuery = "SELECT * FROM " + USERS_TABLE + " WHERE " + COLUMN_USERS_USERNAMES + " = " + "'" + username + "'" + " AND " +  COLUMN_USERS_PASSWORD + " = " + "'" + password + "'";
+        Cursor cursor = db.rawQuery(searchQuery ,null);
+        if (cursor.getCount() > 0) {
+            return true;
+        }
+        cursor.close();
+        db.close();
+        return false;
     }
 
 }

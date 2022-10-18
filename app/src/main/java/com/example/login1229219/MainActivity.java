@@ -7,10 +7,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     EditText et_username, et_password;
     Button b_login, b_register;
+    TextView tv_loggedIn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,12 +24,30 @@ public class MainActivity extends AppCompatActivity {
         et_password = findViewById(R.id.et_password);
         b_login = findViewById(R.id.b_login);
         b_register = findViewById(R.id.b_register);
+        tv_loggedIn = findViewById(R.id.tv_loggedIn);
+
+
 
         b_register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 goRegister();
+            }
+        });
+
+        b_login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String username = et_username.getText().toString();
+                String password = et_password.getText().toString();
+                Dbhelper dbhelper = new Dbhelper(getApplicationContext());
+                if (dbhelper.checkUsers(username, password)) {
+                    tv_loggedIn.setVisibility(View.VISIBLE);
+                } else {
+                    Toast.makeText(MainActivity.this, "Error!", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
 
