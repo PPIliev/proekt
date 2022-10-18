@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
         b_register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 goRegister();
             }
         });

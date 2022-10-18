@@ -2,6 +2,7 @@ package com.example.login1229219;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.util.Patterns;
@@ -38,6 +39,7 @@ public class Register extends AppCompatActivity {
                     UsersModel usersModel = new UsersModel(-1, et_username.getText().toString() ,et_password.getText().toString(),et_email.getText().toString());
                     Dbhelper dbHelper = new Dbhelper(getApplicationContext());
                     dbHelper.insertUser(usersModel);
+                    goToMain();
                 } else {
                         //email
                         tv_passError.setText("You must enter a valid email!");
@@ -52,4 +54,11 @@ public class Register extends AppCompatActivity {
 
 
     }
+
+    public void goToMain() {
+        Intent i = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(i);
+    }
+
+
 }
