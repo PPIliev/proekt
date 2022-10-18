@@ -15,7 +15,7 @@
         android:drawableStart="@drawable/password_icon"
         android:ems="10"
         android:hint="@string/Reenter"
-        android:inputType="textPersonName"
+        android:inputType="textPassword"
         android:minHeight="48dp"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
@@ -77,7 +77,8 @@
         android:drawableStart="@drawable/password_icon"
         android:ems="10"
         android:hint="@string/password"
-        android:inputType="textPersonName"
+        android:password="true"
+        android:inputType="textPassword"
         android:minHeight="48dp"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
@@ -95,5 +96,19 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_email" />
+
+    <TextView
+        android:id="@+id/tv_passsError"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/passerror"
+        android:textColor="#F10E0E"
+        android:textSize="20sp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/b_register" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
