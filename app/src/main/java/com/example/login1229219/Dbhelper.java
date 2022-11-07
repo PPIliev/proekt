@@ -15,6 +15,7 @@ public class Dbhelper extends SQLiteOpenHelper {
     public static final String COLUMN_USERS_USERNAMES = "USERS_USERNAMES";
     public static final String COLUMN_USERS_PASSWORD = "USERS_PASSWORDS";
     public static final String COLUMN_USERS_EMAIL = "USERS_EMAIL";
+    public static final String  COLUMN_USERS_TYPE = "USERS_TYPE";
 
     public Dbhelper(@Nullable Context context) {
         super(context, "users.db", null,1);
@@ -23,7 +24,9 @@ public class Dbhelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String createTableStatement = "CREATE TABLE " + USERS_TABLE + " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_USERS_USERNAMES + " TEXT, " + COLUMN_USERS_PASSWORD + " VARCHAR, " + COLUMN_USERS_EMAIL + " TEXT)";
+        String createTableStatement = "CREATE TABLE " + USERS_TABLE +
+                " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_USERS_USERNAMES +
+                " TEXT, " + COLUMN_USERS_PASSWORD + " VARCHAR, " + COLUMN_USERS_EMAIL + " TEXT, " + COLUMN_USERS_TYPE + " INTEGER)";
         db.execSQL(createTableStatement);
     }
 
@@ -39,6 +42,7 @@ public class Dbhelper extends SQLiteOpenHelper {
         cv.put(COLUMN_USERS_USERNAMES, usersModel.getUsername());
         cv.put(COLUMN_USERS_EMAIL, usersModel.getEmail());
         cv.put(COLUMN_USERS_PASSWORD, usersModel.getPassword());
+        cv.put(COLUMN_USERS_TYPE, usersModel.getType());
 
         long insert = db.insert(USERS_TABLE, null, cv);
         if (insert == -1) {
@@ -48,16 +52,38 @@ public class Dbhelper extends SQLiteOpenHelper {
 
     }
 
-    public boolean checkUsers(String username, String password) {
+    public int checkUserType(String username, String password) {
         SQLiteDatabase db = getReadableDatabase();
-        String searchQuery = "SELECT * FROM " + USERS_TABLE + " WHERE " + COLUMN_USERS_USERNAMES + " = " + "'" + username + "'" + " AND " +  COLUMN_USERS_PASSWORD + " = " + "'" + password + "'";
+        int type = 0;
+
+        String searchQuery = "SELECT * FROM " +
+                USERS_TABLE + " WHERE " + COLUMN_USERS_USERNAMES + " = " + "'" + username +
+                "'" + " AND " +  COLUMN_USERS_PASSWORD + " = " + "'" + password + "'";
         Cursor cursor = db.rawQuery(searchQuery ,null);
+        cursor.moveToFirst();
         if (cursor.getCount() > 0) {
-            return true;
+            type = cursor.getInt(cursor.getColumnIndexOrThrow("USERS_TYPE"));
         }
+
+
         cursor.close();
         db.close();
-        return false;
+        return type;
     }
+
+
+//    public boolean checkUsers(String username, String password) {
+//        SQLiteDatabase db = getReadableDatabase();
+//        String searchQuery = "SELECT * FROM " +
+//                USERS_TABLE + " WHERE " + COLUMN_USERS_USERNAMES + " = " + "'" + username +
+//                "'" + " AND " +  COLUMN_USERS_PASSWORD + " = " + "'" + password + "'";
+//        Cursor cursor = db.rawQuery(searchQuery ,null);
+//        if (cursor.getCount() > 0) {
+//            return true;
+//        }
+//        cursor.close();
+//        db.close();
+//        return false;
+//    }
 
 }

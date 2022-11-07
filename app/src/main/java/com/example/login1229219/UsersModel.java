@@ -7,22 +7,37 @@ public class UsersModel {
     private String username;
     private String password;
     private String email;
+    private int type;
 
-    public UsersModel(int id, String username, String password, String email) {
+    public UsersModel(int id, String username, String password, String email, int type) {
         this.id = id;
         this.password = password;
         this.username = username;
         this.email = email;
+        this.type = type;
     }
 
     public UsersModel(){}
 
-
+    // ToString method
     @Override
     public String toString() {
-        return  "id = " + id +
-                ", username = '" + username + '\'' +
-                ", email = " + email;
+        return "UsersModel{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", type=" + type +
+                '}';
+    }
+
+    // getters and setters
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 
     public int getId() {
