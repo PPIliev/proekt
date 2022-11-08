@@ -21,8 +21,6 @@ public class Register extends AppCompatActivity {
     RadioButton rb_normal, rb_other;
     int selectedType;
 
-    Dbhelper dbHelper;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,8 +41,6 @@ public class Register extends AppCompatActivity {
         b_register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                selectedType = rg_type.getCheckedRadioButtonId();
-
 
                 if (typeOfUserHasBeenSelected()) {
                     String nothingSelected = "You must select a type for your account!";
@@ -59,7 +55,7 @@ public class Register extends AppCompatActivity {
 
                         if (correctEmail()) {
                             createUser();
-                            checkType(selectedType);
+                            goToLogin();
 
                         } else {
                             //Invalid Email
@@ -86,18 +82,12 @@ public class Register extends AppCompatActivity {
 
     }
 
-    public void goToMain() {
-        Intent i = new Intent(getApplicationContext(), MainActivity.class);
-        startActivity(i);
-    }
 
-    public void goToDashboardNormal() {
-        Intent i = new Intent(getApplicationContext(),Nuser.class);
-        startActivity(i);
-    }
-
-    public void goToDashboardOther() {
-        Intent i = new Intent(getApplicationContext(),Ouser.class);
+    //Go to login activity and pass a string for error message
+    public void goToLogin() {
+        String reg = "You have successfully registered, please login to your account";
+        Intent i = new Intent(getApplicationContext(), Login.class);
+        i.putExtra("registered", reg);
         startActivity(i);
     }
 
@@ -107,7 +97,7 @@ public class Register extends AppCompatActivity {
         Dbhelper dbHelper = new Dbhelper(getApplicationContext());
         dbHelper.insertUser(usersModel);
     }
-
+    //check type of user
     public int checkTypeForDB(int selectedType) {
         if (selectedType == R.id.rb_normal) {
             return 1;
@@ -116,22 +106,18 @@ public class Register extends AppCompatActivity {
     }
 
 //Error checkers
-    public void checkType(int selectedType) {
-        if (selectedType == R.id.rb_normal) {
-            goToDashboardNormal();
-        }
-        goToDashboardOther();
-    }
 
-
+    //check if username already exists in db
     public boolean checkSameUsername() {
+        Dbhelper dbHelper = new Dbhelper(getApplicationContext());
         if (dbHelper.checkSameUsername(et_username.getText().toString())) {
             return true;
         }
         return false;
     }
-
+    //check if email has already been used
     public boolean checkSameEmail() {
+        Dbhelper dbHelper = new Dbhelper(getApplicationContext());
         if (dbHelper.checkSameEmail(et_email.getText().toString())) {
             return true;
         }
@@ -146,6 +132,7 @@ public class Register extends AppCompatActivity {
         return false;
     }
 
+    //check if email has been used and if its the correct format
     public boolean correctEmail() {
         String email = et_email.getText().toString();
         if (!email.isEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches() && checkSameEmail()) {
@@ -153,15 +140,16 @@ public class Register extends AppCompatActivity {
         }
         return false;
     }
-
+    //check if radiobutton has been selected
     public boolean typeOfUserHasBeenSelected() {
         selectedType = rg_type.getCheckedRadioButtonId();
         if (selectedType == -1) {
-            return false;
+            return true;
         }
-        return true;
+        return false;
     }
 
+    //error message to use for other functions
     public void errorMessage(String error) {
         tv_passError.setText(error);
         tv_passError.setVisibility(View.VISIBLE);

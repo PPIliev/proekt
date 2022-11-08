@@ -7,7 +7,7 @@
     tools:context=".Ouser">
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/tv_user"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="You have logged in as other user"
@@ -25,5 +25,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_user" />
 </androidx.constraintlayout.widget.ConstraintLayout>

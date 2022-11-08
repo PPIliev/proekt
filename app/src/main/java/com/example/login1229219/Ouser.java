@@ -7,11 +7,13 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 public class Ouser extends AppCompatActivity {
     Button b_logout;
     SharedPreferences sPreferences;
     SharedPreferences.Editor editor;
+    TextView tv_user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,22 +24,18 @@ public class Ouser extends AppCompatActivity {
         editor = sPreferences.edit();
 
         b_logout = findViewById(R.id.b_logout);
+        tv_user = findViewById(R.id.tv_user);
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            String user = extras.getString("username");
+            tv_user.setText("Hello " + user + " wellcome to the dashboard!");
+            tv_user.setVisibility(View.VISIBLE);
+        }
 
         b_logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                SharedPreferences.Editor editor = getSharedPreferences("sharedPreferencesOther", MODE_PRIVATE).edit();
-////                editor.putString("password", "");
-////                editor.putString("email", "");
-//                editor.putBoolean("isLoggedInAsOtherUser", false);
-//                editor.apply();
-//
-//                Intent intent = new Intent(Ouser.this, MainActivity.class);
-//                intent.putExtra("finish", true);
-//                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                startActivity(intent);
-//
-//                finish();
                 editor.clear();
                 editor.commit();
                 goToMain();

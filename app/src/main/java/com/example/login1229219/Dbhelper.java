@@ -80,8 +80,12 @@ public class Dbhelper extends SQLiteOpenHelper {
                 "'";
         Cursor cursor = db.rawQuery(searchQuery, null);
         if (cursor.getCount() > 0) {
+            cursor.close();
+            db.close();
             return false;
         }
+        cursor.close();
+        db.close();
         return true;
     }
 
@@ -93,8 +97,12 @@ public class Dbhelper extends SQLiteOpenHelper {
                 "'";
         Cursor cursor = db.rawQuery(searchQuery, null);
         if (cursor.getCount() > 0) {
+            cursor.close();
+            db.close();
             return false;
         }
+        cursor.close();
+        db.close();
         return true;
     }
 

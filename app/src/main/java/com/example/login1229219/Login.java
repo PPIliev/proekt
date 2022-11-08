@@ -9,11 +9,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class Login extends AppCompatActivity {
     Button b_login;
     EditText et_username, et_password;
+    TextView tv_registered;
 
     SharedPreferences sPreferences;
     SharedPreferences.Editor editor;
@@ -25,6 +27,7 @@ public class Login extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         b_login = findViewById(R.id.b_login);
+        tv_registered = findViewById(R.id.tv_registered);
         et_username = findViewById(R.id.et_username);
         et_password = findViewById(R.id.et_password);
 
@@ -40,6 +43,14 @@ public class Login extends AppCompatActivity {
             startActivity(i);
         }
 
+        //Get error message from Login activity
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            tv_registered.setText(extras.getString("registered"));
+            tv_registered.setVisibility(View.VISIBLE);
+        }
+
+
 
         b_login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,11 +65,13 @@ public class Login extends AppCompatActivity {
                     editor.putBoolean("isLoggedInAsNormalUser", true);
                     editor.commit();
                     Intent i = goToDashboardNormal(getApplicationContext());
+                    i.putExtra("username", et_username.getText().toString());
                     startActivity(i);
                 } else if (dbhelper.checkUserType(username, password) == 2) {
                     editor.putBoolean("isLoggedInAsOtherUser", true);
                     editor.commit();
                     Intent i = goToDashboardOther(getApplicationContext());
+                    i.putExtra("username", et_username.getText().toString());
                     startActivity(i);
                 }
 
@@ -77,5 +90,7 @@ public class Login extends AppCompatActivity {
         return new Intent(context, Ouser.class);
 
     }
+
+
 
 }
