@@ -44,30 +44,41 @@ public class Register extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 selectedType = rg_type.getCheckedRadioButtonId();
-                if (selectedType == -1) {
-                    tv_passError.setText("You must select a type for your account!");
-                    tv_passError.setVisibility(View.VISIBLE);
-                } else {
 
-                    String email = et_email.getText().toString();
-                    if (et_password.getText().toString().equals(et_password2.getText().toString())) {
-                        if (!email.isEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+
+                if (typeOfUserHasBeenSelected()) {
+                    String nothingSelected = "You must select a type for your account!";
+                    errorMessage(nothingSelected);
+                }
+
+                //if type has been selected -> continue
+                else {
+                    if (checkSameUsername()) {
+
+                    if (passwordMatches()) {
+
+                        if (correctEmail()) {
                             createUser();
-                            if (checkType(selectedType) == 1) {
-                                goToDashboardNormal();
-                            } else if (checkType(selectedType) == 2) {
-                                goToDashboardOther();
-                            }
-//                            goToMain();
+                            checkType(selectedType);
+
                         } else {
-                            //email
-                            tv_passError.setText("You must enter a valid email!");
-                            tv_passError.setVisibility(View.VISIBLE);
+                            //Invalid Email
+                            String errorInvalidEmail = "You must enter a valid email!";
+                            errorMessage(errorInvalidEmail);
                         }
+                        //correctEmail end
                     } else {
-                        //password
+                        //Password does not match
                         tv_passError.setVisibility(View.VISIBLE);
                     }
+                    //password end
+                    } else {
+                        String sameUsername = "The username is taken";
+                        errorMessage(sameUsername);
+                    }
+                    //sameUsername end
+
+
                 }
             }
         });
@@ -92,16 +103,68 @@ public class Register extends AppCompatActivity {
 
 
     public void createUser() {
-        UsersModel usersModel = new UsersModel(-1, et_username.getText().toString() ,et_password.getText().toString(),et_email.getText().toString(),checkType(selectedType));
+        UsersModel usersModel = new UsersModel(-1, et_username.getText().toString() ,et_password.getText().toString(),et_email.getText().toString(),checkTypeForDB(selectedType));
         Dbhelper dbHelper = new Dbhelper(getApplicationContext());
         dbHelper.insertUser(usersModel);
     }
 
-    public int checkType(int selectedType) {
+    public int checkTypeForDB(int selectedType) {
         if (selectedType == R.id.rb_normal) {
             return 1;
         }
         return 2;
+    }
+
+//Error checkers
+    public void checkType(int selectedType) {
+        if (selectedType == R.id.rb_normal) {
+            goToDashboardNormal();
+        }
+        goToDashboardOther();
+    }
+
+
+    public boolean checkSameUsername() {
+        if (dbHelper.checkSameUsername(et_username.getText().toString())) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean checkSameEmail() {
+        if (dbHelper.checkSameEmail(et_email.getText().toString())) {
+            return true;
+        }
+        return false;
+
+    }
+
+    public boolean passwordMatches() {
+        if (et_password.getText().toString().equals(et_password2.getText().toString())) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean correctEmail() {
+        String email = et_email.getText().toString();
+        if (!email.isEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches() && checkSameEmail()) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean typeOfUserHasBeenSelected() {
+        selectedType = rg_type.getCheckedRadioButtonId();
+        if (selectedType == -1) {
+            return false;
+        }
+        return true;
+    }
+
+    public void errorMessage(String error) {
+        tv_passError.setText(error);
+        tv_passError.setVisibility(View.VISIBLE);
     }
 
 

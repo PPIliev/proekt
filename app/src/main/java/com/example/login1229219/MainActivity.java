@@ -13,11 +13,23 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     Button b_login, b_register;
+    SharedPreferences sPreferences;
+    SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        sPreferences = getSharedPreferences("My preferences", MODE_PRIVATE);
+        editor = sPreferences.edit();
+
+        if (sPreferences.contains("isLoggedInAsNormalUser")) {
+            Intent i = Login.goToDashboardNormal(getApplicationContext());
+            startActivity(i);
+        } else if (sPreferences.contains("isLoggedInAsOtherUser")) {
+            Intent i = Login.goToDashboardOther(getApplicationContext());
+            startActivity(i);
+        }
 
         b_login = findViewById(R.id.b_login);
         b_register = findViewById(R.id.b_register);

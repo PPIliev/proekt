@@ -35,6 +35,7 @@ public class Dbhelper extends SQLiteOpenHelper {
 
     }
 
+    //Insert user in DB
     public boolean insertUser(UsersModel usersModel) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
@@ -51,7 +52,7 @@ public class Dbhelper extends SQLiteOpenHelper {
         return true;
 
     }
-
+    //Check if user is "Normal" or "Other" type
     public int checkUserType(String username, String password) {
         SQLiteDatabase db = getReadableDatabase();
         int type = 0;
@@ -69,6 +70,32 @@ public class Dbhelper extends SQLiteOpenHelper {
         cursor.close();
         db.close();
         return type;
+    }
+
+    // The username has already been taken
+    public boolean checkSameUsername(String username) {
+        SQLiteDatabase db = getReadableDatabase();
+        String searchQuery = "SELECT * FROM " +
+                USERS_TABLE + " WHERE " + COLUMN_USERS_USERNAMES + " = " + "'" + username +
+                "'";
+        Cursor cursor = db.rawQuery(searchQuery, null);
+        if (cursor.getCount() > 0) {
+            return false;
+        }
+        return true;
+    }
+
+    //There is an existing account with this email address
+    public boolean checkSameEmail(String email) {
+        SQLiteDatabase db = getReadableDatabase();
+        String searchQuery = "SELECT * FROM " +
+                USERS_TABLE + " WHERE " + COLUMN_USERS_EMAIL + " = " + "'" + email +
+                "'";
+        Cursor cursor = db.rawQuery(searchQuery, null);
+        if (cursor.getCount() > 0) {
+            return false;
+        }
+        return true;
     }
 
 

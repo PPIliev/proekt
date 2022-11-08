@@ -2,6 +2,7 @@ package com.example.login1229219;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -32,9 +33,11 @@ public class Login extends AppCompatActivity {
 
 
         if (sPreferences.contains("isLoggedInAsNormalUser")) {
-            goToDashboardNormal();
+            Intent i = goToDashboardNormal(getApplicationContext());
+            startActivity(i);
         } else if (sPreferences.contains("isLoggedInAsOtherUser")) {
-            goToDashboardOther();
+            Intent i = goToDashboardOther(getApplicationContext());
+            startActivity(i);
         }
 
 
@@ -50,11 +53,13 @@ public class Login extends AppCompatActivity {
                 } else if (dbhelper.checkUserType(username, password) == 1){
                     editor.putBoolean("isLoggedInAsNormalUser", true);
                     editor.commit();
-                    goToDashboardNormal();
+                    Intent i = goToDashboardNormal(getApplicationContext());
+                    startActivity(i);
                 } else if (dbhelper.checkUserType(username, password) == 2) {
                     editor.putBoolean("isLoggedInAsOtherUser", true);
                     editor.commit();
-                    goToDashboardOther();
+                    Intent i = goToDashboardOther(getApplicationContext());
+                    startActivity(i);
                 }
 
             }
@@ -63,17 +68,13 @@ public class Login extends AppCompatActivity {
 
 
 
-    public void goToDashboardNormal() {
-        setContentView(R.layout.activity_nuser);
-        Intent i = new Intent(Login.this,Nuser.class);
-        startActivity(i);
+    public static Intent goToDashboardNormal(Context context) {
+        return new Intent(context, Nuser.class);
 
     }
 
-    public void goToDashboardOther() {
-        setContentView(R.layout.activity_ouser);
-        Intent i = new Intent(Login.this,Ouser.class);
-        startActivity(i);
+    public static Intent goToDashboardOther(Context context) {
+        return new Intent(context, Ouser.class);
 
     }
 
