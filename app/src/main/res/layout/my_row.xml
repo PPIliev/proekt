@@ -16,7 +16,7 @@
             android:padding="12dp">
 
             <TextView
-                android:id="@+id/tv_bookID"
+                android:id="@+id/tv_productID"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="1"
@@ -28,7 +28,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/tv_bookTitle"
+                android:id="@+id/tv_productTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -36,19 +36,19 @@
                 android:textStyle="bold"
                 android:textSize="20sp"
                 android:textColor="@color/black"
-                app:layout_constraintStart_toEndOf="@+id/tv_bookID"
-                app:layout_constraintTop_toTopOf="@+id/tv_bookID" />
+                app:layout_constraintStart_toEndOf="@+id/tv_productID"
+                app:layout_constraintTop_toTopOf="@+id/tv_productID" />
 
             <TextView
-                android:id="@+id/tv_bookAuhor"
+                android:id="@+id/tv_productAuhor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Author1"
-                app:layout_constraintStart_toStartOf="@+id/tv_bookTitle"
-                app:layout_constraintTop_toBottomOf="@+id/tv_bookTitle" />
+                app:layout_constraintStart_toStartOf="@+id/tv_productTitle"
+                app:layout_constraintTop_toBottomOf="@+id/tv_productTitle" />
 
             <TextView
-                android:id="@+id/tv_bookPages"
+                android:id="@+id/tv_productPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="120"

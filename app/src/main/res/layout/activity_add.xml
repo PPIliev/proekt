@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="88dp"
         android:ems="10"
-        android:hint="Book title"
+        android:hint="Product title"
         android:inputType="textPersonName"
         android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:ems="10"
-        android:hint="Book author"
+        android:hint="Product author"
         android:inputType="textPersonName"
         android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -34,12 +34,12 @@
         app:layout_constraintTop_toBottomOf="@+id/et_title" />
 
     <EditText
-        android:id="@+id/et_pages"
+        android:id="@+id/et_price"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:ems="10"
-        android:hint="Number of pages"
+        android:hint="Product price"
         android:inputType="textPersonName"
         android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -56,5 +56,5 @@
         android:textAllCaps="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_pages" />
+        app:layout_constraintTop_toBottomOf="@+id/et_price" />
 </androidx.constraintlayout.widget.ConstraintLayout>

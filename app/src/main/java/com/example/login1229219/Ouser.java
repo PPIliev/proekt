@@ -10,7 +10,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 public class Ouser extends AppCompatActivity {
-    Button b_logout;
+    Button b_logout, b_yourProducts;
     SharedPreferences sPreferences;
     SharedPreferences.Editor editor;
     TextView tv_user;
@@ -24,6 +24,7 @@ public class Ouser extends AppCompatActivity {
         editor = sPreferences.edit();
 
         b_logout = findViewById(R.id.b_logout);
+        b_yourProducts = findViewById(R.id.b_yourProducts);
         tv_user = findViewById(R.id.tv_user);
 
         Bundle extras = getIntent().getExtras();
@@ -42,10 +43,22 @@ public class Ouser extends AppCompatActivity {
             }
         });
 
+        b_yourProducts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                goToProducts();
+            }
+        });
+
     }
 
     public void goToMain() {
         Intent i = new Intent(Ouser.this, MainActivity.class);
+        startActivity(i);
+    }
+
+    public void goToProducts() {
+        Intent i = new Intent(Ouser.this, ProductsList.class);
         startActivity(i);
     }
 

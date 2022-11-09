@@ -18,7 +18,7 @@ public class ProductsList extends AppCompatActivity {
     FloatingActionButton add_button;
 
     MyDatabaseHelper myDB;
-    ArrayList<String> book_id, book_title, book_author, book_pages;
+    ArrayList<String> product_id, product_title, product_author, product_price;
     CustomAdapter customAdapter;
 
     @Override
@@ -38,14 +38,14 @@ public class ProductsList extends AppCompatActivity {
         });
 
         myDB = new MyDatabaseHelper(ProductsList.this);
-        book_id = new ArrayList<>();
-        book_title = new ArrayList<>();
-        book_author = new ArrayList<>();
-        book_pages = new ArrayList<>();
+        product_id = new ArrayList<>();
+        product_title = new ArrayList<>();
+        product_author = new ArrayList<>();
+        product_price = new ArrayList<>();
 
         storeDataInArrays();
 
-        customAdapter = new CustomAdapter(ProductsList.this, book_id, book_title, book_author, book_pages);
+        customAdapter = new CustomAdapter(ProductsList.this, product_id, product_title, product_author, product_price);
         recyclerView.setAdapter(customAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(ProductsList.this));
 
@@ -58,10 +58,10 @@ public class ProductsList extends AppCompatActivity {
             Toast.makeText(this, "No data.", Toast.LENGTH_SHORT).show();
         } else {
             while (cursor.moveToNext()) {
-                book_id.add(cursor.getString(0));
-                book_title.add(cursor.getString(1));
-                book_author.add(cursor.getString(2));
-                book_pages.add(cursor.getString(3));
+                product_id.add(cursor.getString(0));
+                product_title.add(cursor.getString(1));
+                product_author.add(cursor.getString(2));
+                product_price.add(cursor.getString(3));
             }
         }
     }

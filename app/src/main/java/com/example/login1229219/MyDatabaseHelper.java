@@ -12,14 +12,14 @@ import androidx.annotation.Nullable;
 public class MyDatabaseHelper extends SQLiteOpenHelper {
 
     private Context context;
-    private static final String DATABASE_NAME = "Booklibrary.db";
+    private static final String DATABASE_NAME = "Products.db";
     private static final int DATABASE_VERSION = 1;
 
-    private static final String TABLE_NAME = "my_library";
+    private static final String TABLE_NAME = "products";
     private static final String COLUMN_ID = "_id";
-    private static final String COLUMN_TITLE = "book_title";
-    private static final String COLUMN_AUTHOR = "book_author";
-    private static final String COLUMN_PAGES = "book_pages";
+    private static final String COLUMN_TITLE = "product_title";
+    private static final String COLUMN_AUTHOR = "product_author";
+    private static final String COLUMN_PRICE = "product_price";
 
     //Constructor
     public MyDatabaseHelper(@Nullable Context context) {
@@ -34,7 +34,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
                 " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COLUMN_TITLE + " TEXT, " +
                 COLUMN_AUTHOR + " TEXT, " +
-                COLUMN_PAGES + " INTEGER);";
+                COLUMN_PRICE + " INTEGER);";
         db.execSQL(query);
 
     }
@@ -45,13 +45,13 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void addBook(String title, String author, int pages) {
+    public void addProduct(String title, String author, int pages) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
         cv.put(COLUMN_TITLE, title);
         cv.put(COLUMN_AUTHOR, author);
-        cv.put(COLUMN_PAGES, pages);
+        cv.put(COLUMN_PRICE, pages);
         long result = db.insert(TABLE_NAME, null, cv);
         if(result == -1) {
             Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show();

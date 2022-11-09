@@ -13,14 +13,14 @@ import java.util.ArrayList;
 
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHolder> {
     private Context context;
-    private ArrayList book_id, book_title, book_author, book_pages;
+    private ArrayList product_id, product_title, product_author, product_price;
 
-    public CustomAdapter(Context context, ArrayList book_id, ArrayList book_title, ArrayList book_author, ArrayList book_pages) {
+    public CustomAdapter(Context context, ArrayList product_id, ArrayList product_title, ArrayList product_author, ArrayList product_price) {
         this.context = context;
-        this.book_id = book_id;
-        this.book_title = book_title;
-        this.book_author = book_author;
-        this.book_pages = book_pages;
+        this.product_id = product_id;
+        this.product_title = product_title;
+        this.product_author = product_author;
+        this.product_price = product_price;
     }
 
     @NonNull
@@ -33,27 +33,27 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        holder.tv_bookID.setText(String.valueOf(book_id.get(position)));
-        holder.tv_bookTitle.setText(String.valueOf(book_title.get(position)));
-        holder.tv_bookAuthor.setText(String.valueOf(book_author.get(position)));
-        holder.tv_bookPages.setText(String.valueOf(book_pages.get(position)));
+        holder.tv_productID.setText(String.valueOf(product_id.get(position)));
+        holder.tv_productTitle.setText(String.valueOf(product_title.get(position)));
+        holder.tv_productAuthor.setText(String.valueOf(product_author.get(position)));
+        holder.tv_productPrice.setText(String.valueOf(product_price.get(position)));
     }
 
     @Override
     public int getItemCount() {
-        return book_id.size();
+        return product_id.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView tv_bookID, tv_bookTitle, tv_bookAuthor, tv_bookPages;
+        TextView tv_productID, tv_productTitle, tv_productAuthor, tv_productPrice;
 
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            tv_bookID = itemView.findViewById(R.id.tv_bookID);
-            tv_bookTitle = itemView.findViewById(R.id.tv_bookTitle);
-            tv_bookAuthor = itemView.findViewById(R.id.tv_bookAuhor);
-            tv_bookPages = itemView.findViewById(R.id.tv_bookPages);
+            tv_productID = itemView.findViewById(R.id.tv_productID);
+            tv_productTitle = itemView.findViewById(R.id.tv_productTitle);
+            tv_productAuthor = itemView.findViewById(R.id.tv_productAuhor);
+            tv_productPrice = itemView.findViewById(R.id.tv_productPrice);
 
 
 
