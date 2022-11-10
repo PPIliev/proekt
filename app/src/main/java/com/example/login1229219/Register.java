@@ -51,23 +51,23 @@ public class Register extends AppCompatActivity {
                 else {
                     if (checkSameUsername()) {
 
-                    if (passwordMatches()) {
+                        if (passwordMatches()) {
 
-                        if (correctEmail()) {
-                            createUser();
-                            goToLogin();
+                            if (correctEmail()) {
+                                createUser();
+                                goToLogin();
 
+                            } else {
+                                //Invalid Email
+                                String errorInvalidEmail = "You must enter a valid email!";
+                                errorMessage(errorInvalidEmail);
+                            }
+                            //correctEmail end
                         } else {
-                            //Invalid Email
-                            String errorInvalidEmail = "You must enter a valid email!";
-                            errorMessage(errorInvalidEmail);
+                            //Password does not match
+                            tv_passError.setVisibility(View.VISIBLE);
                         }
-                        //correctEmail end
-                    } else {
-                        //Password does not match
-                        tv_passError.setVisibility(View.VISIBLE);
-                    }
-                    //password end
+                        //password end
                     } else {
                         String sameUsername = "The username is taken";
                         errorMessage(sameUsername);

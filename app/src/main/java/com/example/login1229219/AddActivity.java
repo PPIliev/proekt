@@ -2,6 +2,7 @@ package com.example.login1229219;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -26,8 +27,15 @@ public class AddActivity extends AppCompatActivity {
             public void onClick(View view) {
                 MyDatabaseHelper myDB = new MyDatabaseHelper(AddActivity.this);
                 myDB.addProduct(et_title.getText().toString().trim(), et_author.getText().toString().trim(), Integer.valueOf(et_price.getText().toString().trim()));
+                goToList();
             }
         });
 
     }
+
+    public void goToList() {
+        Intent i = new Intent(AddActivity.this, ProductsList.class);
+        startActivity(i);
+    }
+
 }

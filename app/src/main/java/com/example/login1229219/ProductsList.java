@@ -20,6 +20,7 @@ public class ProductsList extends AppCompatActivity {
     MyDatabaseHelper myDB;
     ArrayList<String> product_id, product_title, product_author, product_price;
     CustomAdapter customAdapter;
+    CustomAdapter.recyclerViewClickListener listener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,11 +46,27 @@ public class ProductsList extends AppCompatActivity {
 
         storeDataInArrays();
 
-        customAdapter = new CustomAdapter(ProductsList.this, product_id, product_title, product_author, product_price);
+        setOnClickListener();
+        customAdapter = new CustomAdapter(ProductsList.this, product_id, product_title, product_author, product_price, listener);
         recyclerView.setAdapter(customAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(ProductsList.this));
 
 
+    }
+    //onclick
+    private void setOnClickListener() {
+        listener = new CustomAdapter.recyclerViewClickListener() {
+            @Override
+            public void onClick(View v, int position) {
+                Intent i = new Intent(getApplicationContext(),ProductActivity.class);
+                i.putExtra("title", product_title.get(position));
+                i.putExtra("author", product_author.get(position));
+                i.putExtra("price", product_price.get(position));
+
+
+                startActivity(i);
+            }
+        };
     }
 
     public void storeDataInArrays() {
