@@ -60,6 +60,7 @@
                 android:id="@+id/iv_productImage"
                 android:layout_width="80dp"
                 android:layout_height="52dp"
+                android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/tv_productPrice"
                 app:layout_constraintStart_toEndOf="@+id/tv_productTitle"

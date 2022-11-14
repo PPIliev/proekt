@@ -107,6 +107,9 @@ public class AddActivity extends AppCompatActivity {
             });
 //Sloji permission-ite posle
     public void openGallery(View view) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            requestStoragePermission();
+        }
         Intent i = new Intent();
         i.setType("image/*");
         i.setAction(Intent.ACTION_GET_CONTENT);

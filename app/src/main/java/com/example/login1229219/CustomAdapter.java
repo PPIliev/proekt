@@ -44,7 +44,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
         holder.tv_productTitle.setText(String.valueOf(product_title.get(position)));
         holder.tv_productAuthor.setText(String.valueOf(product_author.get(position)));
         holder.tv_productPrice.setText(String.valueOf(product_price.get(position)));
-        holder.iv_productImage.setImageBitmap(stringToBitmap(String.valueOf(product_image)));
+        holder.iv_productImage.setImageBitmap(stringToBitmap(String.valueOf(product_image.get(position))));
 
     }
 
