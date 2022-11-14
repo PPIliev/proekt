@@ -1,9 +1,13 @@
 package com.example.login1229219;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,15 +17,16 @@ import java.util.ArrayList;
 
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHolder> {
     private Context context;
-    private ArrayList product_id, product_title, product_author, product_price;
+    private ArrayList product_id, product_title, product_author, product_price, product_image;
     private recyclerViewClickListener listener;
 
-    public CustomAdapter(Context context, ArrayList product_id, ArrayList product_title, ArrayList product_author, ArrayList product_price, recyclerViewClickListener listener) {
+    public CustomAdapter(Context context, ArrayList product_id, ArrayList product_title, ArrayList product_author, ArrayList product_price, ArrayList product_image, recyclerViewClickListener listener) {
         this.context = context;
         this.product_id = product_id;
         this.product_title = product_title;
         this.product_author = product_author;
         this.product_price = product_price;
+        this.product_image = product_image;
         this.listener = listener;
     }
 
@@ -39,6 +44,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
         holder.tv_productTitle.setText(String.valueOf(product_title.get(position)));
         holder.tv_productAuthor.setText(String.valueOf(product_author.get(position)));
         holder.tv_productPrice.setText(String.valueOf(product_price.get(position)));
+        holder.iv_productImage.setImageBitmap(stringToBitmap(String.valueOf(product_image)));
 
     }
 
@@ -49,6 +55,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView tv_productID, tv_productTitle, tv_productAuthor, tv_productPrice;
+        ImageView iv_productImage;
 
 
         public MyViewHolder(@NonNull View itemView) {
@@ -57,6 +64,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
             tv_productTitle = itemView.findViewById(R.id.tv_productTitle);
             tv_productAuthor = itemView.findViewById(R.id.tv_productAuhor);
             tv_productPrice = itemView.findViewById(R.id.tv_productPrice);
+            iv_productImage = itemView.findViewById(R.id.iv_productImage);
 
             itemView.setOnClickListener(this);
 
@@ -73,6 +81,15 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
     }
 
 
-
+    private Bitmap stringToBitmap(String string) {
+        Bitmap bitmap = null;
+        try {
+            byte[] encodeByte = Base64.decode(string, Base64.DEFAULT);
+            bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return bitmap;
+    }
 
 }

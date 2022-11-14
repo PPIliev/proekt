@@ -18,7 +18,7 @@ public class ProductsList extends AppCompatActivity {
     FloatingActionButton add_button;
 
     MyDatabaseHelper myDB;
-    ArrayList<String> product_id, product_title, product_author, product_price;
+    ArrayList<String> product_id, product_title, product_author, product_price, product_image;
     CustomAdapter customAdapter;
     CustomAdapter.recyclerViewClickListener listener;
 
@@ -43,11 +43,12 @@ public class ProductsList extends AppCompatActivity {
         product_title = new ArrayList<>();
         product_author = new ArrayList<>();
         product_price = new ArrayList<>();
+        product_image = new ArrayList<>();
 
         storeDataInArrays();
 
         setOnClickListener();
-        customAdapter = new CustomAdapter(ProductsList.this, product_id, product_title, product_author, product_price, listener);
+        customAdapter = new CustomAdapter(ProductsList.this, product_id, product_title, product_author, product_price, product_image, listener);
         recyclerView.setAdapter(customAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(ProductsList.this));
 
@@ -62,6 +63,8 @@ public class ProductsList extends AppCompatActivity {
                 i.putExtra("title", product_title.get(position));
                 i.putExtra("author", product_author.get(position));
                 i.putExtra("price", product_price.get(position));
+                i.putExtra("image", product_image.get(position));
+
 
 
                 startActivity(i);
@@ -79,6 +82,7 @@ public class ProductsList extends AppCompatActivity {
                 product_title.add(cursor.getString(1));
                 product_author.add(cursor.getString(2));
                 product_price.add(cursor.getString(3));
+                product_image.add(cursor.getString(4));
             }
         }
     }
