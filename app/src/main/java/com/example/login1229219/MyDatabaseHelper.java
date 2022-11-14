@@ -20,6 +20,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_TITLE = "product_title";
     private static final String COLUMN_AUTHOR = "product_author";
     private static final String COLUMN_PRICE = "product_price";
+    private static final String COLUMN_IMAGE = "product_image";
 
     //Constructor
     public MyDatabaseHelper(@Nullable Context context) {
@@ -34,7 +35,8 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
                 " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COLUMN_TITLE + " TEXT, " +
                 COLUMN_AUTHOR + " TEXT, " +
-                COLUMN_PRICE + " INTEGER);";
+                COLUMN_PRICE + " INTEGER, " +
+                COLUMN_IMAGE + " TEXT);";
         db.execSQL(query);
 
     }
@@ -45,13 +47,14 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void addProduct(String title, String author, int pages) {
+    public void addProduct(String title, String author, int price, String image) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
         cv.put(COLUMN_TITLE, title);
         cv.put(COLUMN_AUTHOR, author);
-        cv.put(COLUMN_PRICE, pages);
+        cv.put(COLUMN_PRICE, price);
+        cv.put(COLUMN_IMAGE, image);
         long result = db.insert(TABLE_NAME, null, cv);
         if(result == -1) {
             Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show();
