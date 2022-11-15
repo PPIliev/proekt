@@ -33,6 +33,7 @@ public class AddActivity extends AppCompatActivity {
     EditText et_author, et_title, et_price;
     Button b_add, b_gallery, b_camera;
     ImageView iv_image;
+    String user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +48,10 @@ public class AddActivity extends AppCompatActivity {
         b_gallery = findViewById(R.id.b_gallery);
         b_camera = findViewById(R.id.b_camera);
 
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            user = extras.getString("author");
+        }
 
         b_gallery.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,7 +73,7 @@ public class AddActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 MyDatabaseHelper myDB = new MyDatabaseHelper(AddActivity.this);
-                myDB.addProduct(et_title.getText().toString().trim(), et_author.getText().toString().trim(), Integer.valueOf(et_price.getText().toString().trim()), bitmapToString(((BitmapDrawable)iv_image.getDrawable()).getBitmap()));
+                myDB.addProduct(et_title.getText().toString().trim(), user, Integer.valueOf(et_price.getText().toString().trim()), bitmapToString(((BitmapDrawable)iv_image.getDrawable()).getBitmap()));
                 goToList();
             }
         });

@@ -39,6 +39,7 @@ public class Login extends AppCompatActivity {
             Intent i = goToDashboardNormal(getApplicationContext());
             startActivity(i);
         } else if (sPreferences.contains("isLoggedInAsOtherUser")) {
+//            editor.putString("author", et_username.getText().toString());
             Intent i = goToDashboardOther(getApplicationContext());
             startActivity(i);
         }
@@ -63,12 +64,14 @@ public class Login extends AppCompatActivity {
                     Toast.makeText(Login.this, "Error!", Toast.LENGTH_SHORT).show();
                 } else if (dbhelper.checkUserType(username, password) == 1){
                     editor.putBoolean("isLoggedInAsNormalUser", true);
+                    editor.putString("author", et_username.getText().toString());
                     editor.commit();
                     Intent i = goToDashboardNormal(getApplicationContext());
                     i.putExtra("username", et_username.getText().toString());
                     startActivity(i);
                 } else if (dbhelper.checkUserType(username, password) == 2) {
                     editor.putBoolean("isLoggedInAsOtherUser", true);
+                    editor.putString("author", et_username.getText().toString());
                     editor.commit();
                     Intent i = goToDashboardOther(getApplicationContext());
                     i.putExtra("username", et_username.getText().toString());

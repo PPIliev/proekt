@@ -74,4 +74,15 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
+    public Cursor readUserData(String user) {
+        String query = "SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_AUTHOR + " = " + "'" + user + "'";
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = null;
+        if (db != null) {
+            cursor = db.rawQuery(query, null);
+        }
+        return cursor;
+    }
+
 }
