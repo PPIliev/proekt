@@ -1,12 +1,10 @@
 package com.example.login1229219;
 
-import android.content.ClipData;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,13 +17,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHolder> {
+public class CustomAdapter2 extends RecyclerView.Adapter<CustomAdapter2.MyViewHolder> {
     private Context context;
     private ArrayList product_id, product_title, product_author, product_price, product_image;
     private recyclerViewClickListener listener;
-    private recyclerViewMenuClick mListener;
 
-    public CustomAdapter(Context context, ArrayList product_id, ArrayList product_title, ArrayList product_author, ArrayList product_price, ArrayList product_image, recyclerViewClickListener listener, recyclerViewMenuClick mListener) {
+    public CustomAdapter2(Context context, ArrayList product_id, ArrayList product_title, ArrayList product_author, ArrayList product_price, ArrayList product_image, recyclerViewClickListener listener) {
         this.context = context;
         this.product_id = product_id;
         this.product_title = product_title;
@@ -33,7 +30,6 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
         this.product_price = product_price;
         this.product_image = product_image;
         this.listener = listener;
-        this.mListener = mListener;
     }
 
     @NonNull
@@ -59,7 +55,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
         return product_id.size();
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, PopupMenu.OnMenuItemClickListener {
+    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView tv_productID, tv_productTitle, tv_productAuthor, tv_productPrice;
         ImageView iv_productImage;
 
@@ -79,30 +75,17 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
 
         @Override
         public void onClick(View view) {
-            showPopUpMenu(view);
             listener.onClick(view, getAdapterPosition());
         }
-        public void showPopUpMenu(View view) {
-            PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
-            popupMenu.inflate(R.menu.cmenu);
-            popupMenu.setOnMenuItemClickListener(this);
-            popupMenu.show();
-        }
 
-        @Override
-        public boolean onMenuItemClick(MenuItem menuItem) {
-            int position = getAdapterPosition();
-            mListener.onMenuItem(position, menuItem);
-            return false;
-        }
+
+
+
     }
+
 
     public interface recyclerViewClickListener {
         void onClick(View v, int position);
-    }
-
-    public interface recyclerViewMenuClick {
-        void onMenuItem(int position, MenuItem menuItem);
     }
 
 

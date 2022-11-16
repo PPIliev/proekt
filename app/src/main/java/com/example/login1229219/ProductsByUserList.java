@@ -7,7 +7,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.view.ContextMenu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -22,7 +25,9 @@ public class ProductsByUserList extends AppCompatActivity {
     ArrayList<String> product_id, product_title, product_author, product_price, product_image;
     CustomAdapter customAdapter;
     CustomAdapter.recyclerViewClickListener listener;
+    CustomAdapter.recyclerViewMenuClick mListener;
     String user;
+    Integer menuStuff;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +36,7 @@ public class ProductsByUserList extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.recyclerView);
         add_button = findViewById(R.id.add_button);
+        menuStuff = 0;
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -41,7 +47,7 @@ public class ProductsByUserList extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(ProductsByUserList.this, AddActivity.class);
-//                i.putExtra("author", user);
+              i.putExtra("author", user);
                 startActivity(i);
             }
         });
@@ -58,29 +64,56 @@ public class ProductsByUserList extends AppCompatActivity {
         storeDataInArrays();
 
         setOnClickListener();
-        customAdapter = new CustomAdapter(ProductsByUserList.this, product_id, product_title, product_author, product_price, product_image, listener);
+        customAdapter = new CustomAdapter(ProductsByUserList.this, product_id, product_title, product_author, product_price, product_image, listener, mListener);
         recyclerView.setAdapter(customAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(ProductsByUserList.this));
 
 
     }
+
+
+
     //onclick
+
     private void setOnClickListener() {
         listener = new CustomAdapter.recyclerViewClickListener() {
             @Override
             public void onClick(View v, int position) {
-                Intent i = new Intent(getApplicationContext(),ProductActivity.class);
-                i.putExtra("title", product_title.get(position));
-                i.putExtra("author", product_author.get(position));
-                i.putExtra("price", product_price.get(position));
-                i.putExtra("image", product_image.get(position));
 
 
+//                    Intent i = new Intent(getApplicationContext(), ProductActivity.class);
+//                    i.putExtra("title", product_title.get(position));
+//                    i.putExtra("author", product_author.get(position));
+//                    i.putExtra("price", product_price.get(position));
+//                    i.putExtra("image", product_image.get(position));
+//
+//
+//                    startActivity(i);
 
-                startActivity(i);
             }
         };
+
+        mListener = new CustomAdapter.recyclerViewMenuClick() {
+            @Override
+            public void onMenuItem(int position, MenuItem menuItem) {
+                switch (menuItem.getItemId()) {
+                    case R.id.m_view:
+                        Intent i = new Intent(getApplicationContext(), ProductActivity.class);
+                        i.putExtra("title", product_title.get(position));
+                        i.putExtra("author", product_author.get(position));
+                        i.putExtra("price", product_price.get(position));
+                        i.putExtra("image", product_image.get(position));
+
+
+                        startActivity(i);
+                        break;
+                }
+            }
+        };
+
     }
+
+
 
     public void storeDataInArrays() {
         Cursor cursor = myDB.readUserData(user);
@@ -96,4 +129,6 @@ public class ProductsByUserList extends AppCompatActivity {
             }
         }
     }
+
+
 }

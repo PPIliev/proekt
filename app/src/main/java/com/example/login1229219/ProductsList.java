@@ -19,8 +19,9 @@ public class ProductsList extends AppCompatActivity {
 
     MyDatabaseHelper myDB;
     ArrayList<String> product_id, product_title, product_author, product_price, product_image;
-    CustomAdapter customAdapter;
-    CustomAdapter.recyclerViewClickListener listener;
+    CustomAdapter2 customAdapter;
+    CustomAdapter2.recyclerViewClickListener listener;
+//    CustomAdapter.recyclerViewMenuClick mListener;
     String user;
 
     @Override
@@ -57,7 +58,7 @@ public class ProductsList extends AppCompatActivity {
         storeDataInArrays();
 
         setOnClickListener();
-        customAdapter = new CustomAdapter(ProductsList.this, product_id, product_title, product_author, product_price, product_image, listener);
+        customAdapter = new CustomAdapter2(ProductsList.this, product_id, product_title, product_author, product_price, product_image, listener);
         recyclerView.setAdapter(customAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(ProductsList.this));
 
@@ -65,7 +66,7 @@ public class ProductsList extends AppCompatActivity {
     }
     //onclick
     private void setOnClickListener() {
-        listener = new CustomAdapter.recyclerViewClickListener() {
+        listener = new CustomAdapter2.recyclerViewClickListener() {
             @Override
             public void onClick(View v, int position) {
                 Intent i = new Intent(getApplicationContext(),ProductActivity.class);
