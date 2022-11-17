@@ -79,8 +79,6 @@ public class CustomAdapter2 extends RecyclerView.Adapter<CustomAdapter2.MyViewHo
         }
 
 
-
-
     }
 
 
