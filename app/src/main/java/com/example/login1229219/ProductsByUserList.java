@@ -99,6 +99,7 @@ public class ProductsByUserList extends AppCompatActivity {
                 switch (menuItem.getItemId()) {
                     case R.id.m_view:
                         Intent i = new Intent(getApplicationContext(), ProductActivity.class);
+                        i.putExtra("id", product_id.get(position));
                         i.putExtra("title", product_title.get(position));
                         i.putExtra("author", product_author.get(position));
                         i.putExtra("price", product_price.get(position));
@@ -107,11 +108,22 @@ public class ProductsByUserList extends AppCompatActivity {
 
                         startActivity(i);
                         break;
-                }
-            }
-        };
+                    case R.id.m_edit:
+                        Intent intent = new Intent(getApplicationContext(), EditActivity.class);
+                        intent.putExtra("id", product_id.get(position));
+                        intent.putExtra("title", product_title.get(position));
+//                        intent.putExtra("author", product_author.get(position));
+                        intent.putExtra("price", product_price.get(position));
+                        intent.putExtra("image", product_image.get(position));
 
-    }
+                        startActivity(intent);
+
+                }
+                }
+            };
+        }
+
+
 
 
 
