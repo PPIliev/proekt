@@ -1,9 +1,11 @@
 package com.example.login1229219;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -117,6 +119,13 @@ public class ProductsByUserList extends AppCompatActivity {
                         intent.putExtra("image", product_image.get(position));
 
                         startActivity(intent);
+                        break;
+
+                    case R.id.m_delete:
+                        MyDatabaseHelper myDB = new MyDatabaseHelper(ProductsByUserList.this);
+                        String productID = product_id.get(position);
+                        String productTitle = product_title.get(position);
+                        confirmDialog(myDB, productID, productTitle);
 
                 }
                 }
@@ -140,6 +149,26 @@ public class ProductsByUserList extends AppCompatActivity {
                 product_image.add(cursor.getString(4));
             }
         }
+    }
+
+
+    public void confirmDialog(MyDatabaseHelper myDB, String productID, String productTitle) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("DELETE" + productTitle +"?");
+        builder.setMessage("Are you sure you want to DELETE this product ?");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                myDB.deleteOneProduct(productID);
+            }
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+        builder.create().show();
     }
 
 

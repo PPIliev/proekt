@@ -21,6 +21,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_AUTHOR = "product_author";
     private static final String COLUMN_PRICE = "product_price";
     private static final String COLUMN_IMAGE = "product_image";
+    private static final String COLUMN_IMAGE2 = "product_image2";
 
     //Constructor
     public MyDatabaseHelper(@Nullable Context context) {
@@ -36,7 +37,8 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
                 COLUMN_TITLE + " TEXT, " +
                 COLUMN_AUTHOR + " TEXT, " +
                 COLUMN_PRICE + " INTEGER, " +
-                COLUMN_IMAGE + " TEXT);";
+                COLUMN_IMAGE + " TEXT, " +
+                COLUMN_IMAGE2 + " TEXT);";
         db.execSQL(query);
 
     }
@@ -98,8 +100,16 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         } else {
             Toast.makeText(context, "Successfully updated", Toast.LENGTH_SHORT).show();
         }
+    }
 
-
+    public void deleteOneProduct (String row_id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        long result = db.delete(TABLE_NAME, "_id=?", new String[] {row_id});
+        if (result == -1) {
+            Toast.makeText(context, "Failed to delete", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(context, "Successfully deleted", Toast.LENGTH_SHORT).show();
+        }
 
     }
 
