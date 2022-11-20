@@ -49,7 +49,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void addProduct(String title, String author, int price, String image) {
+    public void addProduct(String title, String author, int price, String image, String imageTwo) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
@@ -57,6 +57,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         cv.put(COLUMN_AUTHOR, author);
         cv.put(COLUMN_PRICE, price);
         cv.put(COLUMN_IMAGE, image);
+        cv.put(COLUMN_IMAGE2, imageTwo);
         long result = db.insert(TABLE_NAME, null, cv);
         if(result == -1) {
             Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show();

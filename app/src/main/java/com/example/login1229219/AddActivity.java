@@ -30,10 +30,11 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class AddActivity extends AppCompatActivity {
-    EditText et_author, et_title, et_price;
-    Button b_add, b_gallery, b_camera;
-    ImageView iv_image;
+    EditText et_title, et_price;
+    Button b_add, b_gallery, b_camera, b_imgOne, b_imgTwo;
+    ImageView iv_image, iv_imageTwo;
     String user;
+    int whichImage = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,31 +42,56 @@ public class AddActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add);
 
         et_title = findViewById(R.id.et_title);
-        et_author = findViewById(R.id.et_author);
         et_price = findViewById(R.id.et_price);
         b_add = findViewById(R.id.b_add);
         iv_image = findViewById(R.id.iv_image);
         b_gallery = findViewById(R.id.b_gallery);
         b_camera = findViewById(R.id.b_camera);
+        b_imgOne = findViewById(R.id.b_imgOne);
+        b_imgTwo = findViewById(R.id.b_imgTwo);
+        iv_imageTwo = findViewById(R.id.iv_imageTwo);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             user = extras.getString("author");
         }
 
+        b_imgOne.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                imgVisibility();
+                whichImage = 1;
+            }
+        });
+
+        b_imgTwo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                imgTwoVisibility();
+                whichImage = 2;
+            }
+        });
+
         b_gallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openGallery(iv_image);
-//                image = ((BitmapDrawable)iv_image.getDrawable()).getBitmap();
+                if (whichImage == 1) {
+                    openGallery(iv_image);
+                } else if (whichImage == 2) {
+                    openGallery(iv_imageTwo);
+                }
             }
         });
 
         b_camera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openCamera(iv_image);
-//                image = ((BitmapDrawable)iv_image.getDrawable()).getBitmap();
+                if (whichImage == 1) {
+                    openCamera(iv_image);
+                } else if (whichImage == 2) {
+                    openCamera(iv_imageTwo);
+                }
+
             }
         });
 
@@ -73,7 +99,7 @@ public class AddActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 MyDatabaseHelper myDB = new MyDatabaseHelper(AddActivity.this);
-                myDB.addProduct(et_title.getText().toString().trim(), user, Integer.valueOf(et_price.getText().toString().trim()), bitmapToString(((BitmapDrawable)iv_image.getDrawable()).getBitmap()));
+                myDB.addProduct(et_title.getText().toString().trim(), user, Integer.valueOf(et_price.getText().toString().trim()), bitmapToString(((BitmapDrawable)iv_image.getDrawable()).getBitmap()), bitmapToString(((BitmapDrawable)iv_imageTwo.getDrawable()).getBitmap()));
                 goToList();
             }
         });
@@ -89,7 +115,12 @@ public class AddActivity extends AppCompatActivity {
                         try {
                             Uri selectedImage = result.getData().getData();
                             InputStream imageStream = getContentResolver().openInputStream(selectedImage);
-                            iv_image.setImageBitmap(BitmapFactory.decodeStream(imageStream));
+                            if (whichImage == 1) {
+                                iv_image.setImageBitmap(BitmapFactory.decodeStream(imageStream));
+                            } else if (whichImage == 2) {
+                                iv_imageTwo.setImageBitmap(BitmapFactory.decodeStream(imageStream));
+                            }
+
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -106,7 +137,11 @@ public class AddActivity extends AppCompatActivity {
                     if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                         Bundle extras = result.getData().getExtras();
                         Bitmap image = (Bitmap) extras.get("data");
-                        iv_image.setImageBitmap(image);
+                        if (whichImage == 1) {
+                            iv_image.setImageBitmap(image);
+                        } else if (whichImage == 2) {
+                            iv_imageTwo.setImageBitmap(image);
+                        }
                     }
                 }
             });
@@ -166,6 +201,24 @@ public class AddActivity extends AppCompatActivity {
     private void requestStoragePermission() {
         requestPermissions(new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, 100);
 
+    }
+
+    public void imgVisibility() {
+        if (iv_image.getVisibility() == View.INVISIBLE) {
+            iv_image.setVisibility(View.VISIBLE);
+        }
+        if (iv_imageTwo.getVisibility() == View.VISIBLE) {
+            iv_imageTwo.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    public void imgTwoVisibility() {
+        if (iv_imageTwo.getVisibility() == View.INVISIBLE) {
+            iv_imageTwo.setVisibility(View.VISIBLE);
+        }
+        if (iv_image.getVisibility() == View.VISIBLE) {
+            iv_image.setVisibility(View.INVISIBLE);
+        }
     }
 
 }
