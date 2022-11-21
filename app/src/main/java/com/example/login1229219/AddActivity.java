@@ -6,6 +6,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
@@ -100,7 +101,7 @@ public class AddActivity extends AppCompatActivity {
             public void onClick(View view) {
                 MyDatabaseHelper myDB = new MyDatabaseHelper(AddActivity.this);
                 myDB.addProduct(et_title.getText().toString().trim(), user, Integer.valueOf(et_price.getText().toString().trim()), bitmapToString(((BitmapDrawable)iv_image.getDrawable()).getBitmap()), bitmapToString(((BitmapDrawable)iv_imageTwo.getDrawable()).getBitmap()));
-                goToList();
+                goToProductsList();
             }
         });
 
@@ -159,7 +160,10 @@ public class AddActivity extends AppCompatActivity {
 
     public void openCamera(View view) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            requestCameraPermission();
+            if (!checkCameraPermission()) {
+                requestCameraPermission();
+            }
+
         }
         Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (i.resolveActivity(getPackageManager()) != null) {
@@ -169,8 +173,8 @@ public class AddActivity extends AppCompatActivity {
         takePhoto.launch(i);
     }
 
-    public void goToList() {
-        Intent i = new Intent(AddActivity.this, ProductsList.class);
+    public void goToProductsList() {
+        Intent i = new Intent(AddActivity.this, ProductsByUserList.class);
         startActivity(i);
     }
 
