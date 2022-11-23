@@ -12,6 +12,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.login1229219.Dashboards.Nuser;
+import com.example.login1229219.Dashboards.Ouser;
+import com.example.login1229219.DataBases.Dbhelper;
+
 public class Login extends AppCompatActivity {
     Button b_login;
     EditText et_username, et_password;

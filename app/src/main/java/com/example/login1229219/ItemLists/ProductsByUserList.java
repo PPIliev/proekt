@@ -1,4 +1,4 @@
-package com.example.login1229219;
+package com.example.login1229219.ItemLists;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,12 +9,16 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.PopupMenu;
 import android.widget.Toast;
 
+import com.example.login1229219.Adapters.CustomAdapter;
+import com.example.login1229219.DataBases.MyDatabaseHelper;
+import com.example.login1229219.EditActivity;
+import com.example.login1229219.Helpers.NavigationHelper;
+import com.example.login1229219.ProductActivity;
+import com.example.login1229219.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -24,12 +28,13 @@ public class ProductsByUserList extends AppCompatActivity {
     FloatingActionButton add_button;
 
     MyDatabaseHelper myDB;
-    ArrayList<String> product_id, product_title, product_author, product_price, product_image;
+    ArrayList<String> product_id, product_title, product_author, product_price, product_image, product_imageTwo;
     CustomAdapter customAdapter;
     CustomAdapter.recyclerViewClickListener listener;
     CustomAdapter.recyclerViewMenuClick mListener;
     String user;
     Integer menuStuff;
+    NavigationHelper nHelper = new NavigationHelper();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,9 +53,7 @@ public class ProductsByUserList extends AppCompatActivity {
         add_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(ProductsByUserList.this, AddActivity.class);
-              i.putExtra("author", user);
-                startActivity(i);
+                nHelper.goToAddActivity(getApplicationContext(), user);
             }
         });
 
@@ -62,6 +65,8 @@ public class ProductsByUserList extends AppCompatActivity {
         product_author = new ArrayList<>();
         product_price = new ArrayList<>();
         product_image = new ArrayList<>();
+        product_imageTwo = new ArrayList<>();
+
 
         storeDataInArrays();
 
@@ -106,6 +111,9 @@ public class ProductsByUserList extends AppCompatActivity {
                         i.putExtra("author", product_author.get(position));
                         i.putExtra("price", product_price.get(position));
                         i.putExtra("image", product_image.get(position));
+                        i.putExtra("imageTwo", product_imageTwo.get(position));
+
+
 
 
                         startActivity(i);
@@ -147,6 +155,7 @@ public class ProductsByUserList extends AppCompatActivity {
                 product_author.add(cursor.getString(2));
                 product_price.add(cursor.getString(3));
                 product_image.add(cursor.getString(4));
+                product_imageTwo.add(cursor.getString(5));
             }
         }
     }

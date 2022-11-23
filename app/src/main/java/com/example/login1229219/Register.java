@@ -2,9 +2,7 @@ package com.example.login1229219;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
@@ -13,6 +11,10 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.example.login1229219.DataBases.Dbhelper;
+import com.example.login1229219.Helpers.NavigationHelper;
+import com.example.login1229219.Models.UsersModel;
+
 public class Register extends AppCompatActivity {
     Button b_register;
     EditText et_password2, et_password, et_username, et_email;
@@ -20,6 +22,7 @@ public class Register extends AppCompatActivity {
     RadioGroup rg_type;
     RadioButton rb_normal, rb_other;
     int selectedType;
+    NavigationHelper nHelper = new NavigationHelper();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +58,7 @@ public class Register extends AppCompatActivity {
 
                             if (correctEmail()) {
                                 createUser();
-                                goToLogin();
+                                nHelper.goToLogin(getApplicationContext());
 
                             } else {
                                 //Invalid Email
@@ -84,12 +87,12 @@ public class Register extends AppCompatActivity {
 
 
     //Go to login activity and pass a string for error message
-    public void goToLogin() {
-        String reg = "You have successfully registered, please login to your account";
-        Intent i = new Intent(getApplicationContext(), Login.class);
-        i.putExtra("registered", reg);
-        startActivity(i);
-    }
+//    public void goToLogin() {
+//        String reg = "You have successfully registered, please login to your account";
+//        Intent i = new Intent(getApplicationContext(), Login.class);
+//        i.putExtra("registered", reg);
+//        startActivity(i);
+//    }
 
 
     public void createUser() {

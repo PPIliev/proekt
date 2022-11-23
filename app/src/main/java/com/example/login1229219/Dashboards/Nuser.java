@@ -1,4 +1,4 @@
-package com.example.login1229219;
+package com.example.login1229219.Dashboards;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -9,11 +9,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.login1229219.Helpers.NavigationHelper;
+import com.example.login1229219.MainActivity;
+import com.example.login1229219.R;
+
 public class Nuser extends AppCompatActivity {
     Button b_logout;
     SharedPreferences sPreferences;
     SharedPreferences.Editor editor;
     TextView tv_hello;
+    NavigationHelper nHelper = new NavigationHelper();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,14 +42,10 @@ public class Nuser extends AppCompatActivity {
             public void onClick(View view) {
                 editor.clear();
                 editor.commit();
-                goToMain();
+                nHelper.goToMain(getApplicationContext());
             }
         });
 
     }
 
-    public void goToMain() {
-        Intent i = new Intent(Nuser.this, MainActivity.class);
-        startActivity(i);
-    }
 }

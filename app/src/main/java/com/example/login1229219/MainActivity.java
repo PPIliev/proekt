@@ -11,10 +11,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.login1229219.Helpers.NavigationHelper;
+
 public class MainActivity extends AppCompatActivity {
     Button b_login, b_register;
     SharedPreferences sPreferences;
     SharedPreferences.Editor editor;
+    NavigationHelper nHelper = new NavigationHelper();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,27 +42,17 @@ public class MainActivity extends AppCompatActivity {
         b_register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                goRegister();
+                nHelper.goRegister(getApplicationContext());
             }
         });
 
         b_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                goLogin();
+                nHelper.goLogin(getApplicationContext());
             }
         });
 
 
-    }
-
-    public void goLogin() {
-        Intent i = new Intent(getApplicationContext(), Login.class);
-        startActivity(i);
-    }
-
-    public void goRegister() {
-        Intent i = new Intent(getApplicationContext(), Register.class);
-        startActivity(i);
     }
 }

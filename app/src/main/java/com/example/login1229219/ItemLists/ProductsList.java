@@ -1,4 +1,4 @@
-package com.example.login1229219;
+package com.example.login1229219.ItemLists;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -9,6 +9,12 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
+
+import com.example.login1229219.Adapters.CustomAdapter2;
+import com.example.login1229219.DataBases.MyDatabaseHelper;
+import com.example.login1229219.Helpers.NavigationHelper;
+import com.example.login1229219.ProductActivity;
+import com.example.login1229219.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -21,8 +27,8 @@ public class ProductsList extends AppCompatActivity {
     ArrayList<String> product_id, product_title, product_author, product_price, product_image;
     CustomAdapter2 customAdapter;
     CustomAdapter2.recyclerViewClickListener listener;
-//    CustomAdapter.recyclerViewMenuClick mListener;
     String user;
+    NavigationHelper nHelper = new NavigationHelper();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,9 +46,7 @@ public class ProductsList extends AppCompatActivity {
         add_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(ProductsList.this, AddActivity.class);
-                i.putExtra("author", user);
-                startActivity(i);
+                nHelper.goToAddActivity(getApplicationContext(), user);
             }
         });
 
@@ -69,7 +73,7 @@ public class ProductsList extends AppCompatActivity {
         listener = new CustomAdapter2.recyclerViewClickListener() {
             @Override
             public void onClick(View v, int position) {
-                Intent i = new Intent(getApplicationContext(),ProductActivity.class);
+                Intent i = new Intent(getApplicationContext(), ProductActivity.class);
                 i.putExtra("title", product_title.get(position));
                 i.putExtra("author", product_author.get(position));
                 i.putExtra("price", product_price.get(position));

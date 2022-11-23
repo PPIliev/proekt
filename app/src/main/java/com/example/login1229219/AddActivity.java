@@ -4,29 +4,24 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
 
-import java.io.ByteArrayOutputStream;
+import com.example.login1229219.DataBases.MyDatabaseHelper;
+import com.example.login1229219.Helpers.NavigationHelper;
+import com.example.login1229219.Helpers.ProductsHelper;
+
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -36,6 +31,12 @@ public class AddActivity extends AppCompatActivity {
     ImageView iv_image, iv_imageTwo;
     String user;
     int whichImage = 1;
+    ProductsHelper pHelper = new ProductsHelper();
+    NavigationHelper nHelper = new NavigationHelper();
+
+    private static final int camCode = 100;
+    private static final int STORAGE_PERMISSION_CODE = 101;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +52,8 @@ public class AddActivity extends AppCompatActivity {
         b_imgOne = findViewById(R.id.b_imgOne);
         b_imgTwo = findViewById(R.id.b_imgTwo);
         iv_imageTwo = findViewById(R.id.iv_imageTwo);
+
+
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -76,23 +79,29 @@ public class AddActivity extends AppCompatActivity {
         b_gallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (whichImage == 1) {
-                    openGallery(iv_image);
-                } else if (whichImage == 2) {
-                    openGallery(iv_imageTwo);
-                }
+               if (pHelper.checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, STORAGE_PERMISSION_CODE, getApplicationContext(), AddActivity.this)) {
+
+                   if (whichImage == 1) {
+                       pHelper.openGallery(iv_image, loadPhoto);
+                   } else if (whichImage == 2) {
+                       pHelper.openGallery(iv_imageTwo, loadPhoto);
+                   }
+
+               }
             }
         });
 
         b_camera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (whichImage == 1) {
-                    openCamera(iv_image);
-                } else if (whichImage == 2) {
-                    openCamera(iv_imageTwo);
-                }
+                if (pHelper.checkPermission(Manifest.permission.CAMERA, camCode, getApplicationContext(), AddActivity.this)) {
 
+                    if (whichImage == 1) {
+                        pHelper.openCamera(iv_image, takePhoto);
+                    } else if (whichImage == 2) {
+                        pHelper.openCamera(iv_imageTwo, takePhoto);
+                    }
+                }
             }
         });
 
@@ -100,8 +109,8 @@ public class AddActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 MyDatabaseHelper myDB = new MyDatabaseHelper(AddActivity.this);
-                myDB.addProduct(et_title.getText().toString().trim(), user, Integer.valueOf(et_price.getText().toString().trim()), bitmapToString(((BitmapDrawable)iv_image.getDrawable()).getBitmap()), bitmapToString(((BitmapDrawable)iv_imageTwo.getDrawable()).getBitmap()));
-                goToProductsList();
+                myDB.addProduct(et_title.getText().toString().trim(), user, Integer.valueOf(et_price.getText().toString().trim()), pHelper.bitmapToString(((BitmapDrawable)iv_image.getDrawable()).getBitmap()), pHelper.bitmapToString(((BitmapDrawable)iv_imageTwo.getDrawable()).getBitmap()));
+                nHelper.goToProductsList(getApplicationContext());
             }
         });
 
@@ -129,6 +138,10 @@ public class AddActivity extends AppCompatActivity {
                 }
             });
 
+
+
+
+
     ActivityResultLauncher<Intent> takePhoto = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
@@ -144,68 +157,12 @@ public class AddActivity extends AppCompatActivity {
                             iv_imageTwo.setImageBitmap(image);
                         }
                     }
+
                 }
             });
-//Sloji permission-ite posle
-    public void openGallery(View view) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            requestStoragePermission();
-        }
-        Intent i = new Intent();
-        i.setType("image/*");
-        i.setAction(Intent.ACTION_GET_CONTENT);
-        loadPhoto.launch(i);
-//        startActivityForResult(Intent.createChooser(i, "Select Picture"), GALLERY_REQUEST);
-    }
 
-    public void openCamera(View view) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (!checkCameraPermission()) {
-                requestCameraPermission();
-            }
 
-        }
-        Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (i.resolveActivity(getPackageManager()) != null) {
 
-            Toast.makeText(this, "error", Toast.LENGTH_SHORT).show();
-        }
-        takePhoto.launch(i);
-    }
-
-    public void goToProductsList() {
-        Intent i = new Intent(AddActivity.this, ProductsByUserList.class);
-        startActivity(i);
-    }
-
-    private String bitmapToString(Bitmap bitmap) {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-        byte[] b = baos.toByteArray();
-        return Base64.encodeToString(b, Base64.DEFAULT);
-    }
-
-    private boolean checkCameraPermission() {
-        boolean res1 = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
-        boolean res2 = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
-        return res1 && res2;
-    }
-
-    private boolean checkStoragePermission() {
-        boolean res1 = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
-        return res1;
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    private void requestCameraPermission() {
-        requestPermissions(new String[] {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 100);
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    private void requestStoragePermission() {
-        requestPermissions(new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, 100);
-
-    }
 
     public void imgVisibility() {
         if (iv_image.getVisibility() == View.INVISIBLE) {
@@ -224,5 +181,37 @@ public class AddActivity extends AppCompatActivity {
             iv_image.setVisibility(View.INVISIBLE);
         }
     }
+
+
+//TESTING
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode,
+//                                           @NonNull String[] permissions,
+//                                           @NonNull int[] grantResults)
+//    {
+//        super.onRequestPermissionsResult(requestCode,
+//                permissions,
+//                grantResults);
+//
+//        if (requestCode == camCode) {
+//            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//                Toast.makeText(AddActivity.this, "Camera Permission Granted", Toast.LENGTH_SHORT) .show();
+//            }
+//            else {
+//                Toast.makeText(AddActivity.this, "Camera Permission Denied", Toast.LENGTH_SHORT) .show();
+//            }
+//        }
+//        else if (requestCode == STORAGE_PERMISSION_CODE) {
+//            if (grantResults.length > 0
+//                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//                Toast.makeText(AddActivity.this, "Storage Permission Granted", Toast.LENGTH_SHORT).show();
+//            } else {
+//                Toast.makeText(AddActivity.this, "Storage Permission Denied", Toast.LENGTH_SHORT).show();
+//            }
+//        }
+//    }
+
+
+
 
 }

@@ -1,4 +1,4 @@
-package com.example.login1229219;
+package com.example.login1229219.DataBases;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -87,6 +87,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         }
         return cursor;
     }
+
 
     public void updateData(String row_id, String title, String price, String image) {
         SQLiteDatabase db = this.getWritableDatabase();

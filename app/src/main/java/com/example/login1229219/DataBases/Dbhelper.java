@@ -1,4 +1,4 @@
-package com.example.login1229219;
+package com.example.login1229219.DataBases;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
+
+import com.example.login1229219.Models.UsersModel;
 
 public class Dbhelper extends SQLiteOpenHelper {
 

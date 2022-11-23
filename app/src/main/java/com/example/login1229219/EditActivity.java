@@ -4,7 +4,6 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
@@ -13,10 +12,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,7 +20,9 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 
-import java.io.ByteArrayOutputStream;
+import com.example.login1229219.DataBases.MyDatabaseHelper;
+import com.example.login1229219.Helpers.ProductsHelper;
+
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -34,6 +32,9 @@ public class EditActivity extends AppCompatActivity {
     Button b_gallery, b_camera, b_firstImg, b_secondImg, b_edit;
     Integer whichImage = 0;
     String id;
+    private static final int camCode = 100;
+    private static final int STORAGE_PERMISSION_CODE = 101;
+    ProductsHelper pHelper = new ProductsHelper();
 
 
     @Override
@@ -59,7 +60,7 @@ public class EditActivity extends AppCompatActivity {
             id = extras.getString("id");
             et_title.setText(extras.getString("title"));
             et_price.setText(extras.getString("price"));
-            iv_image.setImageBitmap(stringToBitmap(extras.getString("image")));
+            iv_image.setImageBitmap(pHelper.stringToBitmap(extras.getString("image")));
         }
 
 
@@ -67,7 +68,7 @@ public class EditActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 imgVisibility();
-                iv_image.setImageBitmap(stringToBitmap(extras.getString("image")));
+                iv_image.setImageBitmap(pHelper.stringToBitmap(extras.getString("image")));
                 whichImage = 1;
             }
         });
@@ -87,16 +88,18 @@ public class EditActivity extends AppCompatActivity {
         b_gallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openGallery(iv_image);
-//                image = ((BitmapDrawable)iv_image.getDrawable()).getBitmap();
+                if (pHelper.checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, STORAGE_PERMISSION_CODE, getApplicationContext(), EditActivity.this)) {
+                        pHelper.openGallery(iv_image, loadPhoto);
+                }
             }
         });
 
         b_camera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openCamera(iv_image);
-//                image = ((BitmapDrawable)iv_image.getDrawable()).getBitmap();
+                if (pHelper.checkPermission(Manifest.permission.CAMERA, camCode, getApplicationContext(), EditActivity.this)) {
+                        pHelper.openCamera(iv_image, takePhoto);
+                }
             }
         });
 
@@ -105,7 +108,7 @@ public class EditActivity extends AppCompatActivity {
             public void onClick(View view) {
                 MyDatabaseHelper myDB = new MyDatabaseHelper(EditActivity.this);
                 if (whichImage == 1) {
-                    myDB.updateData(id, et_title.getText().toString(), et_price.getText().toString(), bitmapToString(((BitmapDrawable)iv_image.getDrawable()).getBitmap()));
+                    myDB.updateData(id, et_title.getText().toString(), et_price.getText().toString(), pHelper.bitmapToString(((BitmapDrawable)iv_image.getDrawable()).getBitmap()));
                 } else if (whichImage == 2) {
 
                 } else {
@@ -135,23 +138,8 @@ public class EditActivity extends AppCompatActivity {
     }
 
 
-    private Bitmap stringToBitmap(String string) {
-        Bitmap bitmap = null;
-        try {
-            byte[] encodeByte = Base64.decode(string, Base64.DEFAULT);
-            bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return bitmap;
-    }
 
-    private String bitmapToString(Bitmap bitmap) {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-        byte[] b = baos.toByteArray();
-        return Base64.encodeToString(b, Base64.DEFAULT);
-    }
+
 
 
     // Gluposti ot AddActivity za kamerata
@@ -186,36 +174,6 @@ public class EditActivity extends AppCompatActivity {
                     }
                 }
             });
-    public void openGallery(View view) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            requestStoragePermission();
-        }
-        Intent i = new Intent();
-        i.setType("image/*");
-        i.setAction(Intent.ACTION_GET_CONTENT);
-        loadPhoto.launch(i);
-    }
 
-    public void openCamera(View view) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            requestCameraPermission();
-        }
-        Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (i.resolveActivity(getPackageManager()) != null) {
 
-            Toast.makeText(this, "error", Toast.LENGTH_SHORT).show();
-        }
-        takePhoto.launch(i);
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    private void requestCameraPermission() {
-        requestPermissions(new String[] {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 100);
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    private void requestStoragePermission() {
-        requestPermissions(new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, 100);
-
-    }
 }
