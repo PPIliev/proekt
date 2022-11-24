@@ -12,7 +12,7 @@ import com.example.login1229219.Helpers.NavigationHelper;
 import com.example.login1229219.R;
 
 public class Ouser extends AppCompatActivity {
-    Button b_logout, b_yourProducts, b_userProducts;
+    Button b_logout, b_yourProducts, b_userProducts, b_convert;
     SharedPreferences sPreferences;
     SharedPreferences.Editor editor;
     TextView tv_user;
@@ -31,6 +31,7 @@ public class Ouser extends AppCompatActivity {
         b_yourProducts = findViewById(R.id.b_yourProducts);
         b_userProducts = findViewById(R.id.b_userProducts);
         tv_user = findViewById(R.id.tv_user);
+        b_convert = findViewById(R.id.b_convert);
 
         tv_user.setText(userName);
 
@@ -61,6 +62,13 @@ public class Ouser extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 nHelper.goToUserProducts(getApplicationContext(), tv_user);
+            }
+        });
+
+        b_convert.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                nHelper.goToCurrencyConverter(getApplicationContext());
             }
         });
 

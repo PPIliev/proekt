@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.widget.TextView;
 
 import com.example.login1229219.AddActivity;
+import com.example.login1229219.CurrencyConverter;
 import com.example.login1229219.Login;
 import com.example.login1229219.MainActivity;
 import com.example.login1229219.ItemLists.ProductsByUserList;
@@ -59,6 +60,12 @@ public class NavigationHelper {
         context.startActivity(i);
     }
 
+    public void goToCurrencyConverter(Context context) {
+        Intent i = new Intent(context, CurrencyConverter.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(i);
+    }
+
     //MainActivity ->
     public void goLogin(Context context) {
         Intent i = new Intent(context, Login.class);
@@ -71,6 +78,7 @@ public class NavigationHelper {
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(i);
     }
+
 
 
 

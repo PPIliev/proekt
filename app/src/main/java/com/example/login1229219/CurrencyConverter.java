@@ -2,195 +2,192 @@ package com.example.login1229219;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Dialog;
 import android.os.Bundle;
-import android.util.Log;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
+import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.squareup.okhttp.Callback;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.text.BreakIterator;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 public class CurrencyConverter extends AppCompatActivity {
-    public static BreakIterator data;
-    List<String> keysList;
-    Spinner toCurrency;
-    TextView textView;
+    TextView tv_convertFromDropdown, tv_convertToDropdown, tv_conversionRateText;
+    EditText et_amountToConvert;
+    ArrayList<String> arrayList;
+    Dialog fromDialog;
+    Dialog toDialog;
+    Button b_conversion;
+    String convertFromValue, convertToValue, conversionValue;
+    String[] currency = {"EUR", "GBP"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_currency_converter);
 
-        toCurrency = (Spinner)findViewById(R.id.planets_spinner);
-        final EditText edtEuroValue = (EditText)findViewById(R.id.editText4);
-        final Button btnConvert = (Button)findViewById(R.id.button);
-        textView =(TextView) findViewById(R.id.textView7);
-        try {
-            loadConvTypes();
-        } catch (IOException e) {
-            e.printStackTrace();
+        tv_convertFromDropdown = findViewById(R.id.tv_convertFromDropdown);
+        tv_convertToDropdown = findViewById(R.id.tv_convertToDropdown);
+        tv_conversionRateText = findViewById(R.id.tv_conversionRateText);
+        b_conversion = findViewById(R.id.b_conversion);
+        et_amountToConvert = findViewById(R.id.et_amountToConvert);
+
+
+
+        arrayList = new ArrayList<>();
+        for (String i : currency) {
+            arrayList.add(i);
         }
 
-        btnConvert.setOnClickListener(new View.OnClickListener() {
+        tv_convertFromDropdown.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                if(!edtEuroValue.getText().toString().isEmpty())
-                {
-                    String toCurr = toCurrency.getSelectedItem().toString();
-                    double euroVlaue = Double.valueOf(edtEuroValue.getText().toString());
+            public void onClick(View view) {
+                fromDialog = new Dialog(CurrencyConverter.this);
+                fromDialog.setContentView(R.layout.from_spinner);
+                fromDialog.getWindow().setLayout(650,800);
+                fromDialog.show();
 
-                    Toast.makeText(CurrencyConverter.this, "Please Wait..", Toast.LENGTH_SHORT).show();
-                    try {
-                        convertCurrency(toCurr, euroVlaue);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        Toast.makeText(CurrencyConverter.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                }
-                else
-                {
-                    Toast.makeText(CurrencyConverter.this, "Please Enter a Value to Convert..", Toast.LENGTH_SHORT).show();
-                }
+                EditText editText = fromDialog.findViewById(R.id.et_search);
+                ListView listView = fromDialog.findViewById(R.id.lv_from);
 
-            }
-        });
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(CurrencyConverter.this, android.R.layout.simple_list_item_1, arrayList);
+                listView.setAdapter(adapter);
 
-    }
-
-    public void loadConvTypes() throws IOException {
-
-        String url = "https://api.exchangeratesapi.io/latest";
-
-        OkHttpClient client = new OkHttpClient();
-
-        Request request = new Request.Builder()
-                .url(url)
-                .header("Content-Type", "application/json")
-                .build();
-
-
-
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Request request, IOException e) {
-                String mMessage = e.getMessage().toString();
-                Log.w("failure Response", mMessage);
-                Toast.makeText(CurrencyConverter.this, mMessage, Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onResponse(Response response) throws IOException {
-                final String mMessage = response.body().string();
-
-
-                CurrencyConverter.this.runOnUiThread(new Runnable() {
+                editText.addTextChangedListener(new TextWatcher() {
                     @Override
-                    public void run() {
-                        //Toast.makeText(MainActivity.this, mMessage, Toast.LENGTH_SHORT).show();
-                        try {
-                            JSONObject obj = new JSONObject(mMessage);
-                            JSONObject  b = obj.getJSONObject("rates");
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                            Iterator keysToCopyIterator = b.keys();
-                            keysList = new ArrayList<String>();
+                    }
 
-                            while(keysToCopyIterator.hasNext()) {
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                        adapter.getFilter().filter(charSequence);
+                    }
 
-                                String key = (String) keysToCopyIterator.next();
-
-                                keysList.add(key);
-
-                            }
-
-
-                            ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, keysList );
-                            toCurrency.setAdapter(spinnerArrayAdapter);
-
-
-
-
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+                    @Override
+                    public void afterTextChanged(Editable editable) {
 
                     }
                 });
-            }
-
-
-
-
-        });
-    }
-
-    public void convertCurrency(final String toCurr, final double euroVlaue) throws IOException {
-
-        String url = "https://api.exchangeratesapi.io/latest";
-
-        OkHttpClient client = new OkHttpClient();
-
-        Request request = new Request.Builder()
-                .url(url)
-                .header("Content-Type", "application/json")
-                .build();
-
-
-
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Request request, IOException e) {
-                String mMessage = e.getMessage().toString();
-                Log.w("failure Response", mMessage);
-                Toast.makeText(CurrencyConverter.this, mMessage, Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onResponse(Response response) throws IOException {
-                final String mMessage = response.body().string();
-                CurrencyConverter.this.runOnUiThread(new Runnable() {
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
-                    public void run() {
-                        //Toast.makeText(MainActivity.this, mMessage, Toast.LENGTH_SHORT).show();
-                        try {
-                            JSONObject obj = new JSONObject(mMessage);
-                            JSONObject  b = obj.getJSONObject("rates");
-
-                            String val = b.getString(toCurr);
-
-                            double output = euroVlaue*Double.valueOf(val);
-
-
-                            textView.setText(String.valueOf(output));
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+                    public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                        tv_convertFromDropdown.setText(adapter.getItem(position));
+                        fromDialog.dismiss();
+                        convertFromValue = adapter.getItem(position);
 
                     }
                 });
+
             }
-
-
-
-
-
         });
+        tv_convertToDropdown.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                toDialog = new Dialog(CurrencyConverter.this);
+                toDialog.setContentView(R.layout.to_spinner);
+                toDialog.getWindow().setLayout(650, 800);
+                toDialog.show();
+
+                EditText editText = toDialog.findViewById(R.id.et_search);
+                ListView listView = toDialog.findViewById(R.id.lv_from);
+
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(CurrencyConverter.this, android.R.layout.simple_list_item_1, arrayList);
+                listView.setAdapter(adapter);
+
+                editText.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                        adapter.getFilter().filter(charSequence);
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable editable) {
+
+                    }
+                });
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                        tv_convertToDropdown.setText(adapter.getItem(position));
+                        toDialog.dismiss();
+                        convertToValue = adapter.getItem(position);
+                    }
+                });
+
+            }
+        });
+
+        b_conversion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    Double amountToConvert = Double.valueOf(CurrencyConverter.this.et_amountToConvert.getText().toString());
+                    getConversionRate(convertFromValue, convertToValue, amountToConvert);
+                } catch (Exception e) {
+
+                }
+            }
+        });
+
+
+
+
     }
+
+        public String getConversionRate(String conversionFrom, String convertTo, Double amountToConvert) {
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url = "https://api.apilayer.com/exchangerates_data/convert?to=" + convertTo +"&from=" + conversionFrom +"&amount=" + amountToConvert + "&apikey=jiblBbApGOcGGp5MbZOJ4PuhzbkCxWRL";
+            JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url,null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+
+                try {
+
+                    double cval = response.getDouble("result");
+
+                    conversionValue = String.valueOf(cval);
+                    tv_conversionRateText.setText(conversionValue);
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+        queue.add(request);
+        return null;
+    }
+    
+
+
 }
