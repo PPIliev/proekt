@@ -1,11 +1,13 @@
 package com.example.login1229219;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -41,6 +43,18 @@ public class CurrencyConverter extends AppCompatActivity {
     String[] currency = {"EUR", "GBP"};
 
     @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_currency_converter);
@@ -50,6 +64,10 @@ public class CurrencyConverter extends AppCompatActivity {
         tv_conversionRateText = findViewById(R.id.tv_conversionRateText);
         b_conversion = findViewById(R.id.b_conversion);
         et_amountToConvert = findViewById(R.id.et_amountToConvert);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
 
 
 
@@ -153,6 +171,9 @@ public class CurrencyConverter extends AppCompatActivity {
                 }
             }
         });
+
+
+
 
 
 
