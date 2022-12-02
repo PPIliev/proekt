@@ -67,6 +67,9 @@ public class ProductsHelper {
 
             // Requesting the permission
             ActivityCompat.requestPermissions(activity, new String[] {permission}, requestCode);
+//                        if (ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED) {
+//                return true;
+//            }
             return false;
         }
         else {

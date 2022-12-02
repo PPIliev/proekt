@@ -71,7 +71,7 @@
         app:layout_constraintHorizontal_bias="0.508"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/avatars[0]" />
+        app:srcCompat="@drawable/secimagetwo" />
 
     <Button
         android:id="@+id/b_gallery"
@@ -128,5 +128,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_launcher_background" />
+        app:srcCompat="@drawable/fistimageone" />
 </androidx.constraintlayout.widget.ConstraintLayout>

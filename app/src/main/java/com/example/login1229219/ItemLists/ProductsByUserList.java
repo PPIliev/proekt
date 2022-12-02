@@ -1,5 +1,6 @@
 package com.example.login1229219.ItemLists;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.login1229219.Adapters.CustomAdapter;
+import com.example.login1229219.Dashboards.Ouser;
 import com.example.login1229219.DataBases.MyDatabaseHelper;
 import com.example.login1229219.EditActivity;
 import com.example.login1229219.Helpers.NavigationHelper;
@@ -37,9 +39,30 @@ public class ProductsByUserList extends AppCompatActivity {
     NavigationHelper nHelper = new NavigationHelper();
 
     @Override
+    public void onBackPressed() {
+        finish();
+        Intent i = new Intent(ProductsByUserList.this, Ouser.class);
+        startActivity(i);
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_products_list);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 
         recyclerView = findViewById(R.id.recyclerView);
         add_button = findViewById(R.id.add_button);

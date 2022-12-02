@@ -20,42 +20,48 @@
         tools:targetApi="31">
         <activity
             android:name=".CurrencyConverter"
-            android:exported="false">
+            android:exported="false"
+            android:label="Currency Converter">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
             android:name=".EditActivity"
-            android:exported="false">
+            android:exported="false"
+            android:label="Edit Product">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
             android:name=".ItemLists.ProductsByUserList"
-            android:exported="false">
+            android:exported="false"
+            android:label="Your Products">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
             android:name=".ProductActivity"
-            android:exported="false">
+            android:exported="false"
+            android:label="Product Page">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
             android:name=".AddActivity"
-            android:exported="false">
+            android:exported="false"
+            android:label="Add Product">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
             android:name=".ItemLists.ProductsList"
-            android:exported="false">
+            android:exported="false"
+            android:label="All Products">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -72,7 +78,7 @@
         <activity
             android:name=".Dashboards.Ouser"
             android:exported="false"
-            android:label="Other users Dashboard">
+            android:label="Dashboard">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -80,7 +86,7 @@
         <activity
             android:name=".Dashboards.Nuser"
             android:exported="false"
-            android:label="Normal users Dashboard">
+            android:label="NDashboard">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />

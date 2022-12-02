@@ -38,6 +38,8 @@ public class ProductsList extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerView);
         add_button = findViewById(R.id.add_button);
 
+//        customAdapter.notifyDataSetChanged();
+
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             user = extras.getString("author");
