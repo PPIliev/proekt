@@ -21,7 +21,7 @@ import java.util.ArrayList;
 
 public class ProductsList extends AppCompatActivity {
     RecyclerView recyclerView;
-    FloatingActionButton add_button;
+//    FloatingActionButton add_button;
 
     MyDatabaseHelper myDB;
     ArrayList<String> product_id, product_title, product_author, product_price, product_image;
@@ -35,8 +35,8 @@ public class ProductsList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_products_list);
 
-        recyclerView = findViewById(R.id.recyclerView);
-        add_button = findViewById(R.id.add_button);
+        recyclerView = findViewById(R.id.recyclerView2);
+//        add_button = findViewById(R.id.add_button);
 
 //        customAdapter.notifyDataSetChanged();
 
@@ -45,12 +45,12 @@ public class ProductsList extends AppCompatActivity {
             user = extras.getString("author");
         }
 
-        add_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                nHelper.goToAddActivity(getApplicationContext(), user);
-            }
-        });
+//        add_button.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                nHelper.goToAddActivity(getApplicationContext(), user);
+//            }
+//        });
 
 
 

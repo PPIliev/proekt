@@ -1,6 +1,7 @@
 package com.example.login1229219.ItemLists;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -59,7 +60,7 @@ public class ProductsByUserList extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_products_list);
+        setContentView(R.layout.activity_products_by_user_list);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -91,14 +92,31 @@ public class ProductsByUserList extends AppCompatActivity {
         product_imageTwo = new ArrayList<>();
 
 
-        storeDataInArrays();
 
+
+        storeDataInArrays();
         setOnClickListener();
         customAdapter = new CustomAdapter(ProductsByUserList.this, product_id, product_title, product_author, product_price, product_image, listener, mListener);
+
         recyclerView.setAdapter(customAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(ProductsByUserList.this));
 
 
+
+//        Intent intent = new Intent(ProductsByUserList.this, ProductsByUserList.class);
+//        startActivity(intent);
+//        finish();
+
+
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+//        if(requestCode == 1){
+        recreate();
+//    }
     }
 
 
@@ -158,6 +176,7 @@ public class ProductsByUserList extends AppCompatActivity {
                         String productTitle = product_title.get(position);
                         confirmDialog(myDB, productID, productTitle);
 
+
                 }
                 }
             };
@@ -179,7 +198,9 @@ public class ProductsByUserList extends AppCompatActivity {
                 product_price.add(cursor.getString(3));
                 product_image.add(cursor.getString(4));
                 product_imageTwo.add(cursor.getString(5));
+
             }
+
         }
     }
 
@@ -192,6 +213,14 @@ public class ProductsByUserList extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 myDB.deleteOneProduct(productID);
+                product_id.clear();
+                product_author.clear();
+                product_image.clear();
+                product_price.clear();
+                product_title.clear();
+                product_imageTwo.clear();
+                storeDataInArrays();
+                customAdapter.notifyDataSetChanged();
             }
         });
         builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
