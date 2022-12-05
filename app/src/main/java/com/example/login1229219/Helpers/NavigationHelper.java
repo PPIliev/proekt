@@ -53,6 +53,13 @@ public class NavigationHelper {
         context.startActivity(i);
     }
 
+    public void goToUserProductsString(Context context, String user) {
+        Intent i = new Intent(context, ProductsByUserList.class);
+        i.putExtra("author", user);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(i);
+    }
+
     public void goToUserProducts(Context context, TextView tv_user) {
         Intent i = new Intent(context, ProductsByUserList.class);
         i.putExtra("author", tv_user.getText().toString());

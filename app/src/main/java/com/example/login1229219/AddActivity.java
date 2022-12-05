@@ -125,7 +125,7 @@ public class AddActivity extends AppCompatActivity {
             public void onClick(View view) {
                 MyDatabaseHelper myDB = new MyDatabaseHelper(AddActivity.this);
                 myDB.addProduct(et_title.getText().toString().trim(), user, Integer.valueOf(et_price.getText().toString().trim()), pHelper.bitmapToString(((BitmapDrawable)iv_image.getDrawable()).getBitmap()), pHelper.bitmapToString(((BitmapDrawable)iv_imageTwo.getDrawable()).getBitmap()));
-//                nHelper.goToProductsList(getApplicationContext());
+                 nHelper.goToUserProductsString(getApplicationContext(), user);
             }
         });
 

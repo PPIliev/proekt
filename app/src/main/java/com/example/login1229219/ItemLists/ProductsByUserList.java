@@ -98,6 +98,15 @@ public class ProductsByUserList extends AppCompatActivity {
         setOnClickListener();
         customAdapter = new CustomAdapter(ProductsByUserList.this, product_id, product_title, product_author, product_price, product_image, listener, mListener);
 
+        product_id.clear();
+        product_author.clear();
+        product_image.clear();
+        product_price.clear();
+        product_title.clear();
+        product_imageTwo.clear();
+        storeDataInArrays();
+        customAdapter.notifyDataSetChanged();
+
         recyclerView.setAdapter(customAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(ProductsByUserList.this));
 
