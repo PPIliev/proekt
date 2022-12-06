@@ -42,35 +42,17 @@ public class Ouser extends AppCompatActivity {
             tv_user.setVisibility(View.VISIBLE);
         }
 
-        b_logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                editor.clear();
-                editor.commit();
-                nHelper.goToMain(getApplicationContext());
-            }
+        b_logout.setOnClickListener(view -> {
+            editor.clear();
+            editor.commit();
+            nHelper.goToMain(getApplicationContext());
         });
 
-        b_yourProducts.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                nHelper.goToProducts(getApplicationContext(), tv_user);
-            }
-        });
+        b_yourProducts.setOnClickListener(view -> nHelper.goToProducts(getApplicationContext(), tv_user));
 
-        b_userProducts.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                nHelper.goToUserProducts(getApplicationContext(), tv_user);
-            }
-        });
+        b_userProducts.setOnClickListener(view -> nHelper.goToUserProducts(getApplicationContext(), tv_user));
 
-        b_convert.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                nHelper.goToCurrencyConverter(getApplicationContext());
-            }
-        });
+        b_convert.setOnClickListener(view -> nHelper.goToCurrencyConverter(getApplicationContext()));
 
 
     }

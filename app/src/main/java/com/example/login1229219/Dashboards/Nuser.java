@@ -14,7 +14,7 @@ import com.example.login1229219.MainActivity;
 import com.example.login1229219.R;
 
 public class Nuser extends AppCompatActivity {
-    Button b_logout;
+    Button b_logout, b_productsNuser, b_converterNuser;
     SharedPreferences sPreferences;
     SharedPreferences.Editor editor;
     TextView tv_hello;
@@ -29,6 +29,8 @@ public class Nuser extends AppCompatActivity {
 
         b_logout = findViewById(R.id.b_logoutNormal);
         tv_hello = findViewById(R.id.tv_hello);
+        b_productsNuser = findViewById(R.id.b_productsNuser);
+        b_converterNuser = findViewById(R.id.b_converterNuser);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -37,14 +39,17 @@ public class Nuser extends AppCompatActivity {
             tv_hello.setVisibility(View.VISIBLE);
         }
 
-        b_logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                editor.clear();
-                editor.commit();
-                nHelper.goToMain(getApplicationContext());
-            }
+        b_logout.setOnClickListener(view -> {
+            editor.clear();
+            editor.commit();
+            nHelper.goToMain(getApplicationContext());
         });
+
+        b_productsNuser.setOnClickListener(view -> nHelper.goToProductsNuser(getApplicationContext()));
+        b_converterNuser.setOnClickListener(view -> nHelper.goToCurrencyConverter(getApplicationContext()));
+
+
+
 
     }
 

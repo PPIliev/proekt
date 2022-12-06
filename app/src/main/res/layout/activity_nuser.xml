@@ -24,4 +24,28 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_hello" />
+
+    <Button
+        android:id="@+id/b_productsNuser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="164dp"
+        android:layout_marginTop="29dp"
+        android:layout_marginEnd="153dp"
+        android:text="Products"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/b_logoutNormal" />
+
+    <Button
+        android:id="@+id/b_converterNuser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="169dp"
+        android:layout_marginTop="53dp"
+        android:layout_marginEnd="148dp"
+        android:text="Currency Converter"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/b_productsNuser" />
 </androidx.constraintlayout.widget.ConstraintLayout>

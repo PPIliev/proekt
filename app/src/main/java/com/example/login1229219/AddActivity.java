@@ -19,6 +19,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.login1229219.DataBases.MyDatabaseHelper;
 import com.example.login1229219.Helpers.NavigationHelper;
@@ -33,6 +34,7 @@ public class AddActivity extends AppCompatActivity {
     ImageView iv_image, iv_imageTwo;
     String user;
     int whichImage = 1;
+//    int imgCheck = 0;
     ProductsHelper pHelper = new ProductsHelper();
     NavigationHelper nHelper = new NavigationHelper();
 
@@ -123,9 +125,13 @@ public class AddActivity extends AppCompatActivity {
         b_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                MyDatabaseHelper myDB = new MyDatabaseHelper(AddActivity.this);
-                myDB.addProduct(et_title.getText().toString().trim(), user, Integer.valueOf(et_price.getText().toString().trim()), pHelper.bitmapToString(((BitmapDrawable)iv_image.getDrawable()).getBitmap()), pHelper.bitmapToString(((BitmapDrawable)iv_imageTwo.getDrawable()).getBitmap()));
-                 nHelper.goToUserProductsString(getApplicationContext(), user);
+                if (imageCheck(iv_image, iv_imageTwo)) {
+                    MyDatabaseHelper myDB = new MyDatabaseHelper(AddActivity.this);
+                    myDB.addProduct(et_title.getText().toString().trim(), user, Integer.valueOf(et_price.getText().toString().trim()), pHelper.bitmapToString(((BitmapDrawable) iv_image.getDrawable()).getBitmap()), pHelper.bitmapToString(((BitmapDrawable) iv_imageTwo.getDrawable()).getBitmap()));
+                    nHelper.goToUserProductsString(getApplicationContext(), user);
+                } else {
+                    Toast.makeText(AddActivity.this, "Please upload Main image and second image.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -198,33 +204,14 @@ public class AddActivity extends AppCompatActivity {
     }
 
 
-//TESTING
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode,
-//                                           @NonNull String[] permissions,
-//                                           @NonNull int[] grantResults)
-//    {
-//        super.onRequestPermissionsResult(requestCode,
-//                permissions,
-//                grantResults);
-//
-//        if (requestCode == camCode) {
-//            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//                Toast.makeText(AddActivity.this, "Camera Permission Granted", Toast.LENGTH_SHORT) .show();
-//            }
-//            else {
-//                Toast.makeText(AddActivity.this, "Camera Permission Denied", Toast.LENGTH_SHORT) .show();
-//            }
-//        }
-//        else if (requestCode == STORAGE_PERMISSION_CODE) {
-//            if (grantResults.length > 0
-//                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//                Toast.makeText(AddActivity.this, "Storage Permission Granted", Toast.LENGTH_SHORT).show();
-//            } else {
-//                Toast.makeText(AddActivity.this, "Storage Permission Denied", Toast.LENGTH_SHORT).show();
-//            }
-//        }
-//    }
+    public boolean imageCheck(ImageView imageView, ImageView imageView2) {
+        if (imageView.getDrawable().getConstantState() == getResources().getDrawable(R.drawable.fistimageone).getConstantState() || imageView.getDrawable().getConstantState() == getResources().getDrawable(R.drawable.secimagetwo).getConstantState()) {
+            return false;
+        } else if (imageView2.getDrawable().getConstantState() == getResources().getDrawable(R.drawable.fistimageone).getConstantState() || imageView2.getDrawable().getConstantState() == getResources().getDrawable(R.drawable.secimagetwo).getConstantState())  {
+            return false;
+        }
+        return true;
+    }
 
 
 

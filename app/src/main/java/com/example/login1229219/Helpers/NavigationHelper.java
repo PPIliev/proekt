@@ -86,6 +86,13 @@ public class NavigationHelper {
         context.startActivity(i);
     }
 
+    //Nuser
+    public void goToProductsNuser(Context context) {
+        Intent i = new Intent(context, ProductsList.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(i);
+    }
+
 
 
 

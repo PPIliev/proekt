@@ -1,5 +1,6 @@
 package com.example.login1229219.ItemLists;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -7,10 +8,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
 import com.example.login1229219.Adapters.CustomAdapter2;
+import com.example.login1229219.Dashboards.Ouser;
 import com.example.login1229219.DataBases.MyDatabaseHelper;
 import com.example.login1229219.Helpers.NavigationHelper;
 import com.example.login1229219.ProductActivity;
@@ -30,27 +33,33 @@ public class ProductsList extends AppCompatActivity {
     String user;
     NavigationHelper nHelper = new NavigationHelper();
 
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_products_list);
 
-        recyclerView = findViewById(R.id.recyclerView2);
-//        add_button = findViewById(R.id.add_button);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-//        customAdapter.notifyDataSetChanged();
+
+        recyclerView = findViewById(R.id.recyclerView2);
+
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             user = extras.getString("author");
         }
 
-//        add_button.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                nHelper.goToAddActivity(getApplicationContext(), user);
-//            }
-//        });
+
 
 
 
