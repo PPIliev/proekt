@@ -17,7 +17,7 @@ import com.example.login1229219.Models.UsersModel;
 
 public class Register extends AppCompatActivity {
     Button b_register;
-    EditText et_password2, et_password, et_username, et_email;
+    EditText et_password2, et_password, et_username, et_email, et_phone;
     TextView tv_passError;
     RadioGroup rg_type;
     RadioButton rb_normal, rb_other;
@@ -38,6 +38,7 @@ public class Register extends AppCompatActivity {
         rg_type = findViewById(R.id.rg_type);
         rb_normal = findViewById(R.id.rb_normal);
         rb_other = findViewById(R.id.rb_other);
+        et_phone = findViewById(R.id.et_phone);
 
 
 
@@ -96,7 +97,8 @@ public class Register extends AppCompatActivity {
 
 
     public void createUser() {
-        UsersModel usersModel = new UsersModel(-1, et_username.getText().toString() ,et_password.getText().toString(),et_email.getText().toString(),checkTypeForDB(selectedType));
+        UsersModel usersModel = new UsersModel(-1, et_username.getText().toString() ,et_password.getText().toString(),et_email.getText().toString(),checkTypeForDB(selectedType),
+                Integer.parseInt(et_phone.getText().toString()));
         Dbhelper dbHelper = new Dbhelper(getApplicationContext());
         dbHelper.insertUser(usersModel);
     }

@@ -17,7 +17,8 @@ public class Dbhelper extends SQLiteOpenHelper {
     public static final String COLUMN_USERS_USERNAMES = "USERS_USERNAMES";
     public static final String COLUMN_USERS_PASSWORD = "USERS_PASSWORDS";
     public static final String COLUMN_USERS_EMAIL = "USERS_EMAIL";
-    public static final String  COLUMN_USERS_TYPE = "USERS_TYPE";
+    public static final String COLUMN_USERS_TYPE = "USERS_TYPE";
+    public static final String COLUMN_USERS_PHONE = "USERS_PHONE";
 
     public Dbhelper(@Nullable Context context) {
         super(context, "users.db", null,1);
@@ -27,8 +28,12 @@ public class Dbhelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String createTableStatement = "CREATE TABLE " + USERS_TABLE +
-                " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_USERS_USERNAMES +
-                " TEXT, " + COLUMN_USERS_PASSWORD + " VARCHAR, " + COLUMN_USERS_EMAIL + " TEXT, " + COLUMN_USERS_TYPE + " INTEGER)";
+                " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + COLUMN_USERS_USERNAMES + " TEXT, "
+                + COLUMN_USERS_PASSWORD + " VARCHAR, "
+                + COLUMN_USERS_EMAIL + " TEXT, "
+                + COLUMN_USERS_TYPE + " INTEGER, "
+                + COLUMN_USERS_PHONE + " INTEGER)";
         db.execSQL(createTableStatement);
     }
 
@@ -46,6 +51,7 @@ public class Dbhelper extends SQLiteOpenHelper {
         cv.put(COLUMN_USERS_EMAIL, usersModel.getEmail());
         cv.put(COLUMN_USERS_PASSWORD, usersModel.getPassword());
         cv.put(COLUMN_USERS_TYPE, usersModel.getType());
+        cv.put(COLUMN_USERS_PHONE, usersModel.getPhone());
 
         long insert = db.insert(USERS_TABLE, null, cv);
         if (insert == -1) {
@@ -106,6 +112,40 @@ public class Dbhelper extends SQLiteOpenHelper {
         cursor.close();
         db.close();
         return true;
+    }
+
+    public int getContactsPhone (String user) {
+        String query = "SELECT " + COLUMN_USERS_PHONE + " FROM " + USERS_TABLE + " WHERE " + COLUMN_USERS_USERNAMES + " = " + "'" + user + "'";
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        int phoneNumber = 0;
+
+        Cursor cursor = null;
+        if (db != null) {
+            cursor = db.rawQuery(query, null);
+        }
+        if (cursor.moveToFirst()) {
+            phoneNumber = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_USERS_PHONE));
+        }
+        return phoneNumber;
+
+    }
+
+    public String getContactsEmail (String user) {
+        String query = "SELECT " + COLUMN_USERS_EMAIL + " FROM " + USERS_TABLE + " WHERE " + COLUMN_USERS_USERNAMES + " = " + "'" + user + "'";
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String email = "";
+
+        Cursor cursor = null;
+        if (db != null) {
+            cursor = db.rawQuery(query, null);
+        }
+        if (cursor.moveToFirst()) {
+            email = String.valueOf(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_USERS_EMAIL)));
+        }
+        return email;
+
     }
 
 

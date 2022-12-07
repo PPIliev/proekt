@@ -2,14 +2,21 @@ package com.example.login1229219;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.login1229219.Adapters.SlidersAdapter;
+import com.example.login1229219.DataBases.Dbhelper;
 import com.example.login1229219.Helpers.ProductsHelper;
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
 import com.smarteist.autoimageslider.SliderAnimations;
@@ -17,10 +24,11 @@ import com.smarteist.autoimageslider.SliderView;
 
 public class ProductActivity extends AppCompatActivity {
     TextView tv_author, tv_price, tv_name;
-//    ImageView iv_productImgOne, iv_productImgTwo;
     ProductsHelper pHelper = new ProductsHelper();
     SliderView sliderView;
     Bitmap imageOne, imageTwo;
+    Dbhelper db;
+    Button b_phoneNumber, b_email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,8 +39,10 @@ public class ProductActivity extends AppCompatActivity {
         tv_author = findViewById(R.id.tv_author);
         tv_price = findViewById(R.id.tv_price);
         tv_name = findViewById(R.id.tv_name);
-//        iv_productImgOne = findViewById(R.id.iv_productImgOne);
-//        iv_productImgTwo = findViewById(R.id.iv_productImgTwo);
+        b_phoneNumber = findViewById(R.id.b_phoneNumber);
+        b_email = findViewById(R.id.b_email);
+
+        db = new Dbhelper(getApplicationContext());
 
 
         Bundle extras = getIntent().getExtras();
@@ -40,24 +50,38 @@ public class ProductActivity extends AppCompatActivity {
             tv_author.setText(extras.getString("author"));
             tv_price.setText(extras.getString("price"));
             tv_name.setText(extras.getString("title"));
-//            iv_productImgOne.setImageBitmap(pHelper.stringToBitmap(extras.getString("image")));
-//            iv_productImgTwo.setImageBitmap(pHelper.stringToBitmap(extras.getString("imageTwo")));
+            int value = db.getContactsPhone(tv_author.getText().toString());
+            b_phoneNumber.setText(String.valueOf(value));
+            b_email.setText(db.getContactsEmail(tv_author.getText().toString()));
+
+
             imageOne = pHelper.stringToBitmap(extras.getString("image"));
             imageTwo = pHelper.stringToBitmap(extras.getString("imageTwo"));
         }
-//        Bitmap one = ((BitmapDrawable)iv_productImgOne.getDrawable()).getBitmap();
-//        Bitmap two = ((BitmapDrawable)iv_productImgTwo.getDrawable()).getBitmap();
+
 
         Bitmap[] images = {imageOne, imageTwo};
         SlidersAdapter sliderAdapter = new SlidersAdapter(images);
         sliderView.setSliderAdapter(sliderAdapter);
-//        sliderView.setIndicatorAnimation(IndicatorAnimationType.WORM);
 
         sliderView.setSliderTransformAnimation(SliderAnimations.DEPTHTRANSFORMATION);
-//        sliderView.startAutoCycle();
 
 
+        b_email.setOnClickListener(view -> {
+            try {
+                Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("mailto:" + b_email.getText().toString()));
+                startActivity(i);
+            } catch (ActivityNotFoundException e) {
 
+            }
+        });
 
+        b_phoneNumber.setOnClickListener(view -> {
+            Intent intent = new Intent(Intent.ACTION_DIAL);
+            intent.setData(Uri.parse("tel:" + b_phoneNumber.getText().toString()));
+//            if (intent.resolveActivity(getPackageManager()) != null) {
+                startActivity(intent);
+//            }
+        });
     }
 }

@@ -10,4 +10,5 @@
     <string name="passerror">"Passwords must be the same! "</string>
     <string name="loggedin">You have logged in correctly!</string>
     <string name="Description">Add a product</string>
+    <string name="Phonenumber">Phone Number</string>
 </resources>

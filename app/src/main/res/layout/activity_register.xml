@@ -7,6 +7,23 @@
     tools:context=".MainActivity">
 
     <EditText
+        android:id="@+id/et_phone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="55dp"
+        android:width="250dp"
+        android:drawableStart="@drawable/ic_baseline_local_phone_24"
+        android:ems="10"
+        android:hint="@string/Phonenumber"
+        android:inputType="number|phone"
+        android:minHeight="48dp"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.465"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/et_password2" />
+
+    <EditText
         android:id="@+id/et_password2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -27,7 +44,7 @@
         android:id="@+id/imageView"
         android:layout_width="93dp"
         android:layout_height="82dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.474"
         app:layout_constraintStart_toStartOf="parent"
@@ -91,10 +108,10 @@
         android:id="@+id/b_register"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="172dp"
+        android:layout_marginTop="236dp"
         android:text="@string/register"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintHorizontal_bias="0.478"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_email" />
 
@@ -126,13 +143,13 @@
             android:id="@+id/rb_normal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Normal user" />
+            android:text="Customer  " />
 
         <RadioButton
             android:id="@+id/rb_other"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Other user" />
+            android:text="Seller" />
     </RadioGroup>
 
     <TextView
