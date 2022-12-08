@@ -1,7 +1,13 @@
 package com.example.login1229219;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
@@ -40,6 +46,12 @@ public class Register extends AppCompatActivity {
         rb_other = findViewById(R.id.rb_other);
         et_phone = findViewById(R.id.et_phone);
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel("Register notification", "Register notification", NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationManager manager = getSystemService(NotificationManager.class);
+            manager.createNotificationChannel(channel);
+        }
+
 
 
         b_register.setOnClickListener(new View.OnClickListener() {
@@ -59,6 +71,7 @@ public class Register extends AppCompatActivity {
 
                             if (correctEmail()) {
                                 createUser();
+                                notifyMe();
                                 nHelper.goToLogin(getApplicationContext());
 
                             } else {
@@ -158,6 +171,17 @@ public class Register extends AppCompatActivity {
     public void errorMessage(String error) {
         tv_passError.setText(error);
         tv_passError.setVisibility(View.VISIBLE);
+    }
+
+    public void notifyMe () {
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), "Register notification");
+        builder.setContentTitle("Welcome to the Team!");
+        builder.setContentText("Thank you for successfully registering!");
+        builder.setSmallIcon(R.drawable.ic_baseline_emoji_emotions_24);
+        builder.setAutoCancel(true);
+
+        NotificationManagerCompat manager = NotificationManagerCompat.from(getApplicationContext());
+        manager.notify(1, builder.build());
     }
 
 
